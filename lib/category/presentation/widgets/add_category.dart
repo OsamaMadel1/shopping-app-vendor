@@ -8,8 +8,7 @@ import 'package:app_vendor/category/application/category_notifier.dart';
 import 'package:app_vendor/category/application/providers/category_notifier_provider.dart';
 
 class AddCategory extends ConsumerWidget {
-  const AddCategory({super.key});
-
+  AddCategory({super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final notifier = ref.read(categoryNotifierProvider.notifier);
