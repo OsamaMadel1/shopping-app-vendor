@@ -1,0 +1,13 @@
+final String baseUrlApi = "";
+final String login = "";
+final String regester = "";
+final String fetchAllProduct = "";
+// final String fetchProductById(String id) = "";
+// final String regester = "";
+// final String regester = "";
+// final String regester = "";
+// final String regester = "";
+// final String regester = "";
+// final String regester = "";
+// final String regester = "";
+// final String regester = "";
