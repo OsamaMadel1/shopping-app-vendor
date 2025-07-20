@@ -28,6 +28,7 @@ class AddCategory extends ConsumerWidget {
     );
   }
 
+
   void _showAddCategoryDialog(BuildContext context, CategoryNotifier notifier) {
     final form = FormGroup({
       'name': FormControl<String>(validators: [Validators.required]),
