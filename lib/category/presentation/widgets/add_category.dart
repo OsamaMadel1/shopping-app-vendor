@@ -12,8 +12,6 @@ class AddCategory extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final notifier = ref.read(categoryNotifierProvider.notifier);
-
     return Container(
       decoration: BoxDecoration(
         shape: BoxShape.circle,
@@ -21,6 +19,7 @@ class AddCategory extends ConsumerWidget {
       ),
       child: IconButton(
         onPressed: () {
+          final notifier = ref.read(categoryNotifierProvider.notifier);
           _showAddCategoryDialog(context, notifier);
         },
         icon: const Icon(Icons.add),
@@ -41,7 +40,7 @@ class AddCategory extends ConsumerWidget {
         content: ReactiveForm(
           formGroup: form,
           child: ReactiveTextInputWidget(
-            hint: 'name categroy'.i18n,
+            hint: 'name category'.i18n,
             controllerName: 'name',
           ),
         ),
