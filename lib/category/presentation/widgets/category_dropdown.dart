@@ -37,7 +37,12 @@ class CategoryDropdown extends ConsumerWidget {
         contentPadding: const EdgeInsets.symmetric(horizontal: 12),
       ),
       items: state.isLoading
-          ? [DropdownMenuItem(value: null, child: Text('loading ....'.i18n))]
+          ? [
+              DropdownMenuItem(
+                value: 'loading',
+                child: Text('loading ....'.i18n),
+              ),
+            ]
           : state.categories
                 .map(
                   (category) => DropdownMenuItem(
