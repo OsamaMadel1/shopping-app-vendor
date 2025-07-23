@@ -1,12 +1,12 @@
 import 'package:app_vendor/category/domain/entity/gategory_entity.dart';
 import 'package:app_vendor/category/domain/repositories/category_repository.dart';
 
-class GetAllCategoriesUseCase {
+class UpdateCategoryUseCase {
   final CategoryRepository repository;
 
-  GetAllCategoriesUseCase(this.repository);
+  UpdateCategoryUseCase(this.repository);
 
-  Future<List<CategoryEntity>> call() async {
-    return await repository.getAllCategories();
+  Future<void> call(CategoryEntity category) async {
+    await repository.updateCategory(category);
   }
 }

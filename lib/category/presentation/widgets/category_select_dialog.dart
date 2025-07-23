@@ -42,7 +42,7 @@ class _CategorySelectDialogState extends ConsumerState<CategorySelectDialog> {
                 shrinkWrap: true,
                 children: state.categories.map((category) {
                   return RadioListTile<String>(
-                    value: category.id,
+                    value: category.id!,
                     groupValue: selectedCategory,
                     title: Text(category.name),
                     onChanged: (value) {

@@ -21,11 +21,24 @@ class CategoryRemoteDataSourceImpl implements CategoryRemoteDataSource {
   }
 
   @override
-  Future<String> addCategory(String name) async {
+  Future<String> addCategory(CategoryModel category) async {
+    final formData = FormData.fromMap({
+      'name': category.name,
+      // إضافة الصورة هنا
+      'image': await MultipartFile.fromFile(
+        category.image,
+        filename: category.image.split('/').last,
+      ),
+    });
+
     final response = await dio.post(
       'Category',
-      data: {'name': name},
-      options: Options(headers: {'Content-Type': 'application/json'}),
+      data: formData,
+      // options: Options(
+      //   headers: {
+      //     'Content-Type': 'multipart/form-data',
+      //   },
+      // ),
     );
 
     if (response.statusCode == 200 && response.data['succeeded'] == true) {
@@ -46,8 +59,21 @@ class CategoryRemoteDataSourceImpl implements CategoryRemoteDataSource {
   }
 
   @override
-  Future<String> updateCategory(String name) {
-    // TODO: implement updateCategory
-    throw UnimplementedError();
+  Future<String> updateCategory(CategoryModel category) async {
+    final formData = FormData.fromMap({
+      'name': category.name,
+      'image': await MultipartFile.fromFile(
+        category.image,
+        filename: category.image.split('/').last,
+      ),
+    });
+
+    final response = await dio.put('Category/${category.id}', data: formData);
+
+    if (response.statusCode == 200 && response.data['succeeded'] == true) {
+      return response.data['data']['id'];
+    } else {
+      throw Exception(response.data['errors'].toString());
+    }
   }
 }

@@ -1,10 +1,14 @@
+import 'dart:io';
+import 'package:app_vendor/category/domain/entity/gategory_entity.dart';
 import 'package:app_vendor/core/presentation/widgets/reactive_text_input_widget.dart';
 import 'package:app_vendor/core/presentation/widgets/wid/colors.dart';
+import 'package:app_vendor/permissions/permission_handler.dart';
 import 'package:app_vendor/translations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:gap/gap.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:reactive_forms/reactive_forms.dart';
-import 'package:app_vendor/category/application/category_notifier.dart';
 import 'package:app_vendor/category/application/providers/category_notifier_provider.dart';
 
 class AddCategory extends ConsumerWidget {
@@ -15,56 +19,180 @@ class AddCategory extends ConsumerWidget {
     return Container(
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: AppColor.kPrimaryColor, // لون الخلفية
+        color: AppColor.kPrimaryColor,
       ),
       child: IconButton(
         onPressed: () {
           final notifier = ref.read(categoryNotifierProvider.notifier);
-          _showAddCategoryDialog(context, notifier);
+          final form = FormGroup({
+            'name': FormControl<String>(validators: [Validators.required]),
+            'imageCategory': FormControl<XFile?>(
+              validators: [Validators.required],
+            ),
+          });
+
+          showDialog(
+            context: context,
+            builder: (_) {
+              bool isSaving = false;
+
+              return StatefulBuilder(
+                builder: (context, setState) {
+                  return AlertDialog(
+                    title: Center(child: Text('Add Category'.i18n)),
+                    content: ConstrainedBox(
+                      constraints: const BoxConstraints(maxHeight: 450),
+                      child: SingleChildScrollView(
+                        child: ReactiveForm(
+                          formGroup: form,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              ReactiveTextInputWidget(
+                                hint: 'name category'.i18n,
+                                controllerName: 'name',
+                              ),
+                              const Gap(10),
+                              ReactiveFormConsumer(
+                                builder: (context, form, _) {
+                                  final imageControl =
+                                      form.control('imageCategory')
+                                          as FormControl<XFile?>;
+                                  final image = imageControl.value;
+
+                                  return Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      ElevatedButton.icon(
+                                        icon: const Icon(Icons.image),
+                                        label: Text('chess image'.i18n),
+                                        onPressed: () async {
+                                          bool granted =
+                                              await PermissionsRequester.requestCameraAndStoragePermissions();
+                                          if (!granted) {
+                                            ScaffoldMessenger.of(
+                                              context,
+                                            ).showSnackBar(
+                                              const SnackBar(
+                                                content: Text(
+                                                  'يرجى منح الصلاحيات للكاميرا والتخزين',
+                                                ),
+                                              ),
+                                            );
+                                            return;
+                                          }
+
+                                          final picker = ImagePicker();
+                                          final picked = await picker.pickImage(
+                                            source: ImageSource.gallery,
+                                          );
+                                          if (picked != null) {
+                                            imageControl.value = picked;
+                                          }
+                                        },
+                                      ),
+                                      const Gap(10),
+                                      if (image != null) ...[
+                                        Text(
+                                          image.name,
+                                          style: const TextStyle(fontSize: 12),
+                                        ),
+                                        const SizedBox(height: 5),
+                                        Image.file(
+                                          File(image.path),
+                                          height: 100,
+                                          width: 100,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ],
+                                    ],
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    actions: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          TextButton(
+                            onPressed: () => Navigator.pop(context),
+                            child: Text('cancel'.i18n),
+                          ),
+                          ElevatedButton(
+                            onPressed: isSaving || form.invalid
+                                ? null
+                                : () async {
+                                    final name =
+                                        form.control('name').value as String;
+                                    final image =
+                                        form.control('imageCategory').value
+                                            as XFile?;
+
+                                    if (image == null) {
+                                      ScaffoldMessenger.of(
+                                        context,
+                                      ).showSnackBar(
+                                        const SnackBar(
+                                          content: Text('الرجاء اختيار صورة'),
+                                        ),
+                                      );
+                                      return;
+                                    }
+
+                                    setState(() => isSaving = true);
+
+                                    final category = CategoryEntity(
+                                      name: name,
+                                      image: image.path,
+                                    );
+
+                                    try {
+                                      await notifier.addCategory(category);
+                                      Navigator.pop(context);
+                                      ScaffoldMessenger.of(
+                                        context,
+                                      ).showSnackBar(
+                                        SnackBar(
+                                          content: Text(
+                                            'Category added successfully!'.i18n,
+                                          ),
+                                        ),
+                                      );
+                                    } catch (e) {
+                                      setState(() => isSaving = false);
+                                      ScaffoldMessenger.of(
+                                        context,
+                                      ).showSnackBar(
+                                        SnackBar(content: Text(e.toString())),
+                                      );
+                                    }
+                                  },
+                            child: isSaving
+                                ? const SizedBox(
+                                    width: 20,
+                                    height: 20,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                    ),
+                                  )
+                                : Text('add'.i18n),
+                          ),
+                        ],
+                      ),
+                    ],
+                  );
+                },
+              );
+            },
+          );
         },
         icon: const Icon(Icons.add),
         tooltip: 'Add Category'.i18n,
-      ),
-    );
-  }
-
-  void _showAddCategoryDialog(BuildContext context, CategoryNotifier notifier) {
-    final form = FormGroup({
-      'name': FormControl<String>(validators: [Validators.required]),
-    });
-
-    showDialog(
-      context: context,
-      builder: (_) => AlertDialog(
-        title: Center(child: Text('Add Category'.i18n)),
-        content: ReactiveForm(
-          formGroup: form,
-          child: ReactiveTextInputWidget(
-            hint: 'name category'.i18n,
-            controllerName: 'name',
-          ),
-        ),
-        actions: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: Text('cancel'.i18n),
-              ),
-              ElevatedButton(
-                onPressed: () async {
-                  if (form.valid) {
-                    final name = form.control('name').value as String;
-                    await notifier.addCategory(name);
-                    Navigator.pop(context);
-                  }
-                },
-                child: Text('add'.i18n),
-              ),
-            ],
-          ),
-        ],
       ),
     );
   }

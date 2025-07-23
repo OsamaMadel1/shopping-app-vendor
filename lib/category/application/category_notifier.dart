@@ -1,15 +1,16 @@
 import 'package:app_vendor/category/application/category_state.dart';
+import 'package:app_vendor/category/domain/entity/gategory_entity.dart';
 import 'package:app_vendor/category/domain/usecase/add_category_use_case.dart';
 import 'package:app_vendor/category/domain/usecase/category_all_catetories_use_case.dart';
-import 'package:app_vendor/category/domain/usecase/delete_category_usc_case.dart';
-import 'package:app_vendor/category/domain/usecase/update_category_usc_case.dart';
+import 'package:app_vendor/category/domain/usecase/delete_category_use_case.dart';
+import 'package:app_vendor/category/domain/usecase/update_category_use_case.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class CategoryNotifier extends StateNotifier<CategoryState> {
   final GetAllCategoriesUseCase getAllCategoriesUseCase;
   final AddCategoryUseCase addCategoryUseCase;
-  final DeleteCategoryUscCase deleteCategoryUscCase;
-  final UpdateCategoryUscCase updateCategoryUscCase;
+  final DeleteCategoryUseCase deleteCategoryUscCase;
+  final UpdateCategoryUseCase updateCategoryUscCase;
 
   CategoryNotifier({
     required this.getAllCategoriesUseCase,
@@ -19,7 +20,9 @@ class CategoryNotifier extends StateNotifier<CategoryState> {
   }) : super(CategoryState.initial());
 
   Future<void> fetchCategories() async {
-    state = state.copyWith(isLoading: true, categories: [], errorMessage: null);
+    // لا تفرغ القائمة الحالية عند بداية التحميل
+    state = state.copyWith(isLoading: true, errorMessage: null);
+
     try {
       final categories = await getAllCategoriesUseCase();
       state = state.copyWith(isLoading: false, categories: categories);
@@ -28,10 +31,10 @@ class CategoryNotifier extends StateNotifier<CategoryState> {
     }
   }
 
-  Future<void> addCategory(String name) async {
+  Future<void> addCategory(CategoryEntity category) async {
     state = state.copyWith(isLoading: true, errorMessage: null);
     try {
-      await addCategoryUseCase(name);
+      await addCategoryUseCase(category);
       await fetchCategories(); // إعادة الجلب بعد الإضافة
     } catch (e) {
       state = state.copyWith(isLoading: false, errorMessage: e.toString());
@@ -48,5 +51,17 @@ class CategoryNotifier extends StateNotifier<CategoryState> {
     }
   }
 
-  Future<void> updateCategory(String name) async {}
+  Future<void> updateCategory(CategoryEntity category) async {
+    try {
+      await updateCategoryUscCase(category);
+      // ✅ إعادة تحميل المنتجات بعد الإضافة
+      // await _refreshProductsAfterMutation(
+      //     shopId: product.shopId, categoryName: product.categoryId);
+      // await fetchProducts();
+      state = state.copyWith(isLoading: true, errorMessage: null);
+      await fetchCategories();
+    } catch (e) {
+      state = state.copyWith(isLoading: false, errorMessage: e.toString());
+    }
+  }
 }
