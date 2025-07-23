@@ -1,4 +1,4 @@
-import 'package:app_vendor/mangment_products/application/providers/repository_provider.dart';
+import 'package:app_vendor/mangment_products/application/providers/product_repository_provider.dart';
 import 'package:app_vendor/mangment_products/domain/entities/product_entity.dart';
 import 'package:app_vendor/mangment_products/domain/usecases/get_product_by_id_usecase.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

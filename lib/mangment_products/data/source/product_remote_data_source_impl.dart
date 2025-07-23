@@ -71,7 +71,7 @@ class ProductRemoteDataSourceImpl implements ProductRemoteDataSource {
       ),
     });
 
-    await dio.post(
+    final response = await dio.post(
       'Product',
       data: formData,
       // options: Options(
@@ -80,6 +80,12 @@ class ProductRemoteDataSourceImpl implements ProductRemoteDataSource {
       //   },
       // ),
     );
+
+    if (response.statusCode == 200 && response.data['succeeded'] == true) {
+      return response.data['data']['id'];
+    } else {
+      throw Exception(response.data['errors'].toString());
+    }
   }
 
   @override
@@ -89,6 +95,11 @@ class ProductRemoteDataSourceImpl implements ProductRemoteDataSource {
 
   @override
   Future<void> deleteProduct(String id) async {
-    await dio.delete('Product/$id');
+    final response = await dio.delete('Product/$id');
+    if (response.statusCode == 200 && response.data['succeeded'] == true) {
+      return response.data['data']['id'];
+    } else {
+      throw Exception(response.data['errors'].toString());
+    }
   }
 }
