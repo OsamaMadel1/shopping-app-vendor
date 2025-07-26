@@ -90,7 +90,33 @@ class ProductRemoteDataSourceImpl implements ProductRemoteDataSource {
 
   @override
   Future<void> updateProduct(ProductModel product) async {
-    await dio.put('Product/${product.id}', data: product.toJson());
+    final formMap = {
+      'Name': product.name,
+      'Description': product.description,
+      'Price': product.price,
+      'CategoryId': product.categoryId,
+      'Currency': product.currency,
+      'ShopId': product.shopId,
+    };
+
+    // ✅ تحقق إن كانت الصورة محلية (ليست رابط http)
+    if (product.image.isNotEmpty && !product.image.startsWith('http')) {
+      formMap['Image'] = await MultipartFile.fromFile(
+        product.image,
+        filename: product.image.split('/').last,
+      );
+    }
+    print('🟢 Sending updated product:');
+    formMap.forEach(
+      (key, value) => print('$key => $value (${value.runtimeType})'),
+    );
+    final formData = FormData.fromMap(formMap);
+
+    final response = await dio.put('Product/${product.id}', data: formData);
+
+    if (response.statusCode != 200 || response.data['succeeded'] != true) {
+      throw Exception(response.data['errors'].toString());
+    }
   }
 
   @override

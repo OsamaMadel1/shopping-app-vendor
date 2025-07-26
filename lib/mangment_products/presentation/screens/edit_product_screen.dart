@@ -48,9 +48,6 @@ class EditProductScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final form = ref.watch(editProductFormProvider(product));
     final theme = Theme.of(context);
-    final isDarkMode = theme.brightness == Brightness.dark;
-    final screenWidth = MediaQuery.of(context).size.width;
-    final isSmallScreen = screenWidth < 400;
 
     ref.listen<ProductState>(productNotifierProvider, (previous, next) {
       if (next is ProductError) {
@@ -75,11 +72,15 @@ class EditProductScreen extends ConsumerWidget {
     });
 
     return Scaffold(
-      // appBar: AppBar(
-      //   title: const Text("تعديل المنتج"),
-      //   centerTitle: true,
-      //   elevation: 0,
-      // ),
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text(
+          'Update product'.i18n,
+          // style: theme.textTheme.headline6
+          //     ?.copyWith(fontWeight: FontWeight.bold)
+        ),
+        elevation: 0,
+      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Card(
@@ -94,11 +95,13 @@ class EditProductScreen extends ConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Text(
-                    "Data Product".i18n,
-                    style: theme.textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: theme.colorScheme.primary,
+                  Center(
+                    child: Text(
+                      "Data Product".i18n,
+                      style: theme.textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: theme.colorScheme.primary,
+                      ),
                     ),
                   ),
                   const Divider(height: 24),
@@ -111,7 +114,7 @@ class EditProductScreen extends ConsumerWidget {
                     prefixIcon: Icons.shopping_bag_outlined,
                   ),
                   const Gap(16),
-                  _buildPriceCurrencyRow(isSmallScreen, isDarkMode),
+                  _buildPriceCurrencyRow(),
                   const Gap(16),
                   _buildLabel("تعديل الفئة"),
                   const Gap(8),
@@ -123,6 +126,7 @@ class EditProductScreen extends ConsumerWidget {
                     // hint: 'أدخل وصفاً للمنتج',
                     hint: '',
                     controllerName: 'descriptionProduct',
+                    color: Colors.black,
                     prefixIcon: Icons.description_outlined,
                   ),
                   const Gap(8),
@@ -139,7 +143,7 @@ class EditProductScreen extends ConsumerWidget {
                             icon: const Icon(Icons.image),
                             label: Text(
                               pickedImage == null
-                                  ? ' chess image'.i18n
+                                  ? ' chees image'.i18n
                                   : 'update image'.i18n,
                             ),
                             onPressed: () async {
@@ -276,72 +280,66 @@ class EditProductScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildPriceCurrencyRow(bool isSmallScreen, bool isDarkMode) {
-    return Row(
+  Widget _buildPriceCurrencyRow() {
+    return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Expanded(
-          flex: isSmallScreen ? 3 : 2,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildLabel("تعديل السعر"),
-              const Gap(8),
-              ReactiveTextInputWidget(
-                // hint: '0.00',
-                hint: '',
-                controllerName: 'priceProduct',
-              ),
-            ],
-          ),
+        _buildLabel("update price".i18n),
+        const Gap(6),
+        ReactiveTextInputWidget(
+          hint: '0.00',
+          controllerName: 'priceProduct',
+          color: Colors.black,
+          prefixIcon: Icons.price_change_outlined,
+          // keyboardType:
+          //     const TextInputType.numberWithOptions(decimal: true),
+          // borderRadius: 12,
+          // fillColor: isDarkMode ? Colors.grey.shade800 : Colors.grey.shade100,
         ),
-        const Gap(10),
-        Expanded(
-          flex: isSmallScreen ? 2 : 1,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildLabel("currency"),
-              const Gap(8),
-              Directionality(
-                textDirection: TextDirection.ltr,
-                child: ReactiveDropdownField<String>(
-                  formControlName: 'currency',
-                  style: const TextStyle(fontSize: 14),
-                  decoration: InputDecoration(
-                    prefixIcon: const Icon(Icons.currency_exchange, size: 20),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 8),
-                    isDense: true,
-                  ),
-                  items: const [
-                    DropdownMenuItem(
-                      value: '\$',
-                      child: Text(
-                        'دولار \$',
-                        style: TextStyle(fontSize: 12),
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                    DropdownMenuItem(
-                      value: 'SY',
-                      child: Text(
-                        'ليرة سورية SY',
-                        style: TextStyle(fontSize: 12),
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                    DropdownMenuItem(
-                      value: 'T',
-                      child: Text(
-                        'ليرة تركية T',
-                        style: TextStyle(fontSize: 12),
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                  ],
+
+        const Gap(14),
+        _buildLabel("update currency".i18n),
+        const Gap(6),
+        Directionality(
+          textDirection: TextDirection.ltr,
+          child: ReactiveDropdownField<String>(
+            formControlName: 'currency',
+            style: const TextStyle(fontSize: 14),
+            decoration: InputDecoration(
+              prefixIcon: const Icon(Icons.currency_exchange, size: 20),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 12,
+                vertical: 10,
+              ),
+              isDense: true,
+              filled: true,
+            ),
+            items: [
+              DropdownMenuItem(
+                value: '\$',
+                child: Text(
+                  'دولار \$',
+                  style: const TextStyle(fontSize: 14, color: Colors.black),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              DropdownMenuItem(
+                value: 'SY',
+                child: Text(
+                  'ليرة سورية SY',
+                  style: const TextStyle(fontSize: 14, color: Colors.black),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              DropdownMenuItem(
+                value: 'T',
+                child: Text(
+                  'ليرة تركية T',
+                  style: const TextStyle(fontSize: 14, color: Colors.black),
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
             ],

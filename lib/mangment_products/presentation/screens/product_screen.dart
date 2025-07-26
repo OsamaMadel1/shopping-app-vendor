@@ -158,128 +158,13 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
     }
   }
 
-  // Widget _buildProductCard(product, String heroTag) {
-  //   return LocalHero(
-  //     tag: heroTag,
-  //     child: SizedBox(
-  //       height: _isGrid ? 280 : 140,
-  //       child: Card(
-  //         shape:
-  //             RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-  //         elevation: 4,
-  //         child: _isGrid
-  //             ? Column(
-  //                 crossAxisAlignment: CrossAxisAlignment.stretch,
-  //                 children: [
-  //                   Expanded(
-  //                     child: ClipRRect(
-  //                       borderRadius: const BorderRadius.vertical(
-  //                           top: Radius.circular(15)),
-  //                       child: Image.network(
-  //                         product.image,
-  //                         fit: BoxFit.cover,
-  //                         errorBuilder: (_, __, ___) =>
-  //                             const Icon(Icons.image_not_supported),
-  //                       ),
-  //                     ),
-  //                   ),
-  //                   Padding(
-  //                     padding: const EdgeInsets.all(8.0),
-  //                     child: Column(
-  //                       crossAxisAlignment: CrossAxisAlignment.start,
-  //                       children: [
-  //                         Row(
-  //                           mainAxisAlignment: MainAxisAlignment.spaceAround,
-  //                           children: [
-  //                             Text(
-  //                               product.name,
-  //                               style: const TextStyle(
-  //                                   fontWeight: FontWeight.bold, fontSize: 16),
-  //                               maxLines: 1,
-  //                               overflow: TextOverflow.ellipsis,
-  //                             ),
-  //                             Text(
-  //                               'price: ${product.price}${product.currency}',
-  //                               style: const TextStyle(color: Colors.teal),
-  //                             ),
-  //                           ],
-  //                         ),
-  //                         const Gap(5),
-  //                         Center(
-  //                           child: ButtonWidget(
-  //                             text: 'details',
-  //                             onTap: () {
-  //                               // context.push('/productDetailsScreen',
-  //                               //     extra: product);
-  //                               context.pushNamed(
-  //                                 'productDetailsScreen',
-  //                                 pathParameters: {'id': product.id!},
-  //                               );
-  //                             },
-  //                           ),
-  //                         ),
-  //                       ],
-  //                     ),
-  //                   ),
-  //                 ],
-  //               )
-  //             : Row(
-  //                 children: [
-  //                   ClipRRect(
-  //                     borderRadius:
-  //                         const BorderRadius.vertical(top: Radius.circular(15)),
-  //                     child: Image.network(
-  //                       product.image,
-  //                       fit: BoxFit.cover,
-  //                       errorBuilder: (_, __, ___) =>
-  //                           const Icon(Icons.image_not_supported),
-  //                     ),
-  //                   ),
-  //                   const Gap(30),
-  //                   Expanded(
-  //                     child: Padding(
-  //                       padding: const EdgeInsets.all(12.0),
-  //                       child: Column(
-  //                         mainAxisAlignment: MainAxisAlignment.center,
-  //                         children: [
-  //                           Text(
-  //                             product.name,
-  //                             style: const TextStyle(
-  //                                 fontWeight: FontWeight.bold, fontSize: 16),
-  //                             maxLines: 1,
-  //                             overflow: TextOverflow.ellipsis,
-  //                           ),
-  //                           Text(
-  //                             'price: ${product.price}${product.currency}',
-  //                             style: const TextStyle(color: Colors.teal),
-  //                           ),
-  //                           const Gap(5),
-  //                           Align(
-  //                             alignment: Alignment.center,
-  //                             child: ButtonWidget(
-  //                               text: 'details',
-  //                               onTap: () {
-  //                                 context.pushNamed('productDetailsScreen',
-  //                                     pathParameters: {'id': product.id!});
-  //                               },
-  //                             ),
-  //                           ),
-  //                         ],
-  //                       ),
-  //                     ),
-  //                   ),
-  //                 ],
-  //               ),
-  //       ),
-  //     ),
-  //   );
-  // }
-
   Widget _buildProductCard(product, String heroTag) {
     return LocalHero(
       tag: heroTag,
       child: SizedBox(
-        height: _isGrid ? 280 : 140,
+        height: _isGrid
+            ? 280
+            : 150, // Slightly increased height for better spacing
         child: InkWell(
           borderRadius: BorderRadius.circular(15),
           onTap: () {
@@ -297,38 +182,81 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                 ? Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
+                      // Image Section
                       Expanded(
                         child: ClipRRect(
                           borderRadius: const BorderRadius.vertical(
-                            top: Radius.circular(15),
+                            top: Radius.circular(12),
                           ),
-                          child: Image.network(
-                            product.image,
-                            fit: BoxFit.cover,
-                            errorBuilder: (_, __, ___) =>
-                                const Icon(Icons.image_not_supported),
+                          child: Center(
+                            child: Container(
+                              color: Colors.grey.shade100,
+                              child: Image.network(
+                                product.image,
+                                width: double.infinity,
+                                fit: BoxFit.cover,
+                                alignment: Alignment
+                                    .center, // Changed to contain for better image display
+                                loadingBuilder: (_, child, progress) {
+                                  return progress == null
+                                      ? child
+                                      : const Center(
+                                          child: CircularProgressIndicator(),
+                                        );
+                                },
+                                errorBuilder: (_, __, ___) => const Center(
+                                  child: Icon(
+                                    Icons.image_not_supported,
+                                    size: 40,
+                                  ),
+                                ),
+                              ),
+                            ),
                           ),
                         ),
                       ),
+                      // Text Content Section
                       Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 8,
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Expanded(
-                              child: Text(
-                                product.name,
+                            // Product Name (single line)
+                            Text(
+                              product.name,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            const SizedBox(height: 4),
+                            // Product Description (max two lines)
+                            if (product.description != null)
+                              Text(
+                                product.description,
                                 style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
+                                  fontSize: 12,
+                                  color: Colors.grey,
                                 ),
-                                maxLines: 1,
+                                maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
                               ),
-                            ),
+                            const SizedBox(height: 6),
+                            // Price (single line)
                             Text(
-                              'price: ${product.price}${product.currency}',
-                              style: const TextStyle(color: Colors.teal),
+                              '${product.price} ${product.currency}',
+                              style: const TextStyle(
+                                color: Colors.teal,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ],
                         ),
@@ -337,27 +265,49 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                   )
                 : Row(
                     children: [
-                      ClipRRect(
-                        borderRadius: const BorderRadius.horizontal(
-                          left: Radius.circular(15),
+                      // Image Section
+                      Container(
+                        width: 120,
+                        decoration: BoxDecoration(
+                          borderRadius: const BorderRadius.horizontal(
+                            left: Radius.circular(12),
+                          ),
+                          color: Colors.grey[100], // Fallback background
                         ),
-                        child: Image.network(
-                          product.image,
-                          height: double.infinity,
-                          width: 120,
-                          fit: BoxFit.cover,
-                          errorBuilder: (_, __, ___) =>
-                              const Icon(Icons.image_not_supported),
+                        child: ClipRRect(
+                          borderRadius: const BorderRadius.horizontal(
+                            left: Radius.circular(12),
+                          ),
+                          child: Image.network(
+                            product.image,
+                            height: double.infinity,
+                            fit: BoxFit.cover,
+                            loadingBuilder: (_, child, progress) {
+                              return progress == null
+                                  ? child
+                                  : const Center(
+                                      child: CircularProgressIndicator(),
+                                    );
+                            },
+                            errorBuilder: (_, __, ___) => const Center(
+                              child: Icon(Icons.image_not_supported, size: 40),
+                            ),
+                          ),
                         ),
                       ),
-                      const Gap(16),
+                      Gap(50),
+                      // Text Content Section
                       Expanded(
                         child: Padding(
-                          padding: const EdgeInsets.all(12.0),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 8,
+                          ),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
+                              // Product Name (single line)
                               Text(
                                 product.name,
                                 style: const TextStyle(
@@ -367,9 +317,29 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                               ),
+                              const SizedBox(height: 4),
+                              // Product Description (max two lines)
+                              if (product.description != null)
+                                Text(
+                                  product.description,
+                                  style: const TextStyle(
+                                    fontSize: 12,
+                                    color: Colors.grey,
+                                  ),
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              const SizedBox(height: 6),
+                              // Price (single line)
                               Text(
-                                'price: ${product.price}${product.currency}',
-                                style: const TextStyle(color: Colors.teal),
+                                '${product.price} ${product.currency}',
+                                style: const TextStyle(
+                                  color: Colors.teal,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 14,
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
                               ),
                             ],
                           ),

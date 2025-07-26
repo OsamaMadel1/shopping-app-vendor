@@ -167,8 +167,19 @@ class ProductDetailsScreen extends ConsumerWidget {
             child: Text('cancel'.i18n),
           ),
           TextButton(
-            onPressed: () {
-              ref.read(productNotifierProvider.notifier).deleteProduct(id);
+            onPressed: () async {
+              // ref.read(productNotifierProvider.notifier).deleteProduct(id);
+              // ✅ الحصول على المنتج أولاً من مزود getProductByIdProvider
+              final product = await ref.read(getProductByIdProvider(id).future);
+
+              // ✅ تمرير shopId و categoryName
+              await ref
+                  .read(productNotifierProvider.notifier)
+                  .deleteProduct(
+                    id: product.id!,
+                    shopId: product.shopId,
+                    categoryName: product.categoryId,
+                  );
               Navigator.pop(context); // يغلق الحوار
               Navigator.pop(context); // يعود للوراء من الشاشة
               ScaffoldMessenger.of(

@@ -84,38 +84,30 @@ class ProductNotifier extends StateNotifier<ProductState> {
   Future<void> updateProduct(ProductEntity product) async {
     try {
       await updateProductUseCase(product);
-      // ✅ إعادة تحميل المنتجات بعد الإضافة
-      // await _refreshProductsAfterMutation(
-      //     shopId: product.shopId, categoryName: product.categoryId);
-      // await fetchProducts();
       await fetchProducts(
         shopId: product.shopId,
         categoryName: product.categoryId,
       );
     } catch (e) {
       final errorMassage = ErrorHandler.getMessage(e);
+      print("Update Product Error: $e");
+
       state = ProductError(errorMassage);
       // state = ProductError(e.toString());
     }
   }
 
-  Future<void> deleteProduct(
-    String id,
-    //    {
-    //   required String shopId,
-    //   String? categoryName,
-    // }
-  ) async {
+  Future<void> deleteProduct({
+    required String id,
+    required String shopId,
+    String? categoryName,
+  }) async {
     try {
       await deleteProductUseCase(id);
-      //TODO :عدم جلب المنتحات من المتاجر التالية بعد الحذف
-      // await _refreshProductsAfterMutation(
-      //     shopId: shopId, categoryName: categoryName);
-      await fetchProducts();
+      await fetchProducts(shopId: shopId, categoryName: categoryName);
     } catch (e) {
       final errorMassage = ErrorHandler.getMessage(e);
       state = ProductError(errorMassage);
-      // state = ProductError(e.toString());
     }
   }
 
