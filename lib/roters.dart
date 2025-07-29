@@ -12,6 +12,10 @@ import 'package:app_vendor/mangment_products/presentation/screens/add_product_sc
 import 'package:app_vendor/mangment_products/presentation/screens/edit_product_screen.dart';
 import 'package:app_vendor/mangment_products/presentation/screens/product_details_screen.dart';
 import 'package:app_vendor/mangment_products/presentation/screens/product_screen.dart';
+import 'package:app_vendor/offfers/presentation/screens/offs_screen.dart';
+// import 'package:app_vendor/offer/domain/entity/offer_entity.dart';
+// import 'package:app_vendor/offer/presentation/screens/offer_screen.dart';
+
 import 'package:app_vendor/orders/presentation/screens/order_details_screen.dart';
 import 'package:app_vendor/orders/presentation/screens/orders_screen.dart';
 import 'package:app_vendor/settings/presentation/screens/settings_screen.dart';
@@ -143,6 +147,36 @@ final router = Provider<GoRouter>((ref) {
           return SettingsScreen();
         },
       ),
+
+      // =================================
+      // ========== offers ==============
+      // =================================
+      GoRoute(
+        path: "/offerScreen",
+        name: "offerScreen",
+        builder: (context, state) => const OffsScreen(),
+      ),
+      // GoRoute(
+      //   path: "/addOfferScreen",
+      //   name: "addOfferScreen",
+      //   builder: (context, state) => const AddOfferScreen(),
+      // ),
+      // GoRoute(
+      //   path: "/editOfferScreen",
+      //   name: "editOfferScreen",
+      //   builder: (context, state) {
+      //     final offer = state.extra as OfferEntity;
+      //     return EditOfferScreen(offer: offer);
+      //   },
+      // ),
+      // GoRoute(
+      //   path: "/offerDetailsScreen/:id",
+      //   name: "offerDetailsScreen",
+      //   builder: (context, state) {
+      //     final id = state.pathParameters['id']!;
+      //     return OfferDetailsScreen(offerId: id);
+      //   },
+      // ),
 
       // =================================
       // ======== category================

@@ -12,18 +12,23 @@ class ReactiveTextInputWidget extends StatelessWidget {
     required this.controllerName,
     this.textInputAction,
     this.prefixIcon,
+    this.color,
+    this.readOnly,
   });
   final String hint;
+  final bool? readOnly;
   Map<String, String Function(Object)>? validationMessages;
   final String controllerName;
   final TextInputAction? textInputAction;
   final IconData? prefixIcon;
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
       child: ReactiveTextField(
+        readOnly: readOnly ?? false,
         textInputAction: textInputAction ?? TextInputAction.done,
         formControlName: controllerName,
         decoration: InputDecoration(
@@ -36,7 +41,7 @@ class ReactiveTextInputWidget extends StatelessWidget {
           filled: true, // تفعيل الخلفية
           fillColor: Colors.grey[100], // لون خلفية فاتح
           labelStyle: TextStyle(
-            color: AppColor.kPrimaryColor,
+            color: color ?? AppColor.kPrimaryColor,
             fontWeight: FontWeight.bold, // خط عريض
             fontSize: 16, // حجم أكبر للنص
           ),
