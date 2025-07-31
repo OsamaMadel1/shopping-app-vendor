@@ -1,7 +1,7 @@
 // domain/value_objects/
 enum GenderEntity {
   male,
-  female;
+  Femalee;
 
   int toInt() => index;
 

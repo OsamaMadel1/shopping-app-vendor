@@ -11,7 +11,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Center(child: TextWidget(text: 'control panel'.i18n)),
+        title: Center(child: TextWidget(text: 'Control Panel'.i18n)),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -55,6 +55,15 @@ class HomeScreen extends StatelessWidget {
               iconColor: Colors.amber,
               onTap: () {
                 // context.push('/reportsScreen');
+              },
+            ),
+            DashBoardCardWidget(
+              icon: Icons.local_offer,
+              text: 'Offers'.i18n,
+              backgroundColor: const Color(0xFFFFF3E0), // برتقالي فاتح
+              iconColor: Colors.amber,
+              onTap: () {
+                context.push('/offerScreen');
               },
             ),
             DashBoardCardWidget(

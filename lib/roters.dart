@@ -5,6 +5,7 @@ import 'package:app_vendor/authentication/application/auth_state.dart';
 import 'package:app_vendor/authentication/application/providers/auth_notifier_provider.dart';
 import 'package:app_vendor/authentication/presentation/screens/login_screen.dart';
 import 'package:app_vendor/authentication/presentation/screens/singup_screen/signup_screen.dart';
+import 'package:app_vendor/comments/presentation/comment_screen.dart';
 import 'package:app_vendor/core/presentation/screens/home_screen.dart';
 import 'package:app_vendor/core/presentation/screens/main_screen.dart';
 import 'package:app_vendor/mangment_products/domain/entities/product_entity.dart';
@@ -132,7 +133,7 @@ final router = Provider<GoRouter>((ref) {
         builder: (context, state) => OrdersScreen(),
       ),
       GoRoute(
-        path: '/order/:id',
+        path: '/orderDetailsScreen/:id',
         name: 'orderDetailsScreen',
         builder: (context, state) {
           final id = state.pathParameters['id']!;
@@ -187,6 +188,18 @@ final router = Provider<GoRouter>((ref) {
       //   builder: (context, state) => CategoriesScreen(),
       // ),
       //-----------------------------------
+
+      // =================================
+      // ======== comments ===============
+      // =================================
+      GoRoute(
+        name: 'commentsScreen',
+        path: '/comments/:productId',
+        builder: (context, state) {
+          final productId = state.pathParameters['productId']!;
+          return CommentsScreen(productId: productId);
+        },
+      ),
     ],
   );
 });

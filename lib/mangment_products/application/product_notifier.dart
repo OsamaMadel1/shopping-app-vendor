@@ -1,5 +1,6 @@
 import 'package:app_vendor/mangment_products/application/product_state.dart';
 import 'package:app_vendor/mangment_products/domain/entities/product_entity.dart';
+import 'package:app_vendor/mangment_products/domain/entities/update_product_entity.dart';
 import 'package:app_vendor/mangment_products/domain/usecases/add_product_usecase.dart';
 import 'package:app_vendor/mangment_products/domain/usecases/delete_product_usecase.dart';
 import 'package:app_vendor/mangment_products/domain/usecases/fetch_products_usecase.dart';
@@ -55,9 +56,6 @@ class ProductNotifier extends StateNotifier<ProductState> {
     try {
       state = ProductLoading();
       await addProductUseCase(product);
-      // ✅ إعادة تحميل المنتجات بعد الإضافة
-      // await _refreshProductsAfterMutation(
-      //     shopId: product.shopId, categoryName: product.categoryId);
       await fetchProducts(shopId: product.shopId, categoryName: categoryName);
     } catch (e) {
       final errorMassage = ErrorHandler.getMessage(e);
@@ -81,7 +79,7 @@ class ProductNotifier extends StateNotifier<ProductState> {
   //   }
   // }
 
-  Future<void> updateProduct(ProductEntity product) async {
+  Future<void> updateProduct(UpdateProductEntity product) async {
     try {
       await updateProductUseCase(product);
       await fetchProducts(
@@ -90,16 +88,15 @@ class ProductNotifier extends StateNotifier<ProductState> {
       );
     } catch (e) {
       final errorMassage = ErrorHandler.getMessage(e);
-      print("Update Product Error: $e");
-
       state = ProductError(errorMassage);
       // state = ProductError(e.toString());
     }
   }
 
-  Future<void> deleteProduct({
-    required String id,
-    required String shopId,
+  Future<void> deleteProduct(
+    String id, {
+
+    String? shopId,
     String? categoryName,
   }) async {
     try {
@@ -108,6 +105,7 @@ class ProductNotifier extends StateNotifier<ProductState> {
     } catch (e) {
       final errorMassage = ErrorHandler.getMessage(e);
       state = ProductError(errorMassage);
+      // state = ProductError(e.toString());
     }
   }
 

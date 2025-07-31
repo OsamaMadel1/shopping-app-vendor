@@ -17,7 +17,7 @@ final editProductFormProvider = Provider.family<FormGroup, ProductEntity>((
       validators: [Validators.required],
     ),
     'descriptionProduct': FormControl<String>(value: product.description),
-    'image': FormControl<String>(value: product.image),
+    'image': FormControl<Object?>(value: product.image),
     'categoryId': FormControl<String>(
       value: product.categoryId,
       validators: [Validators.required],

@@ -1,6 +1,8 @@
 import 'package:app_vendor/mangment_products/data/models/product_model.dart';
+import 'package:app_vendor/mangment_products/data/models/update_product_model.dart';
 import 'package:app_vendor/mangment_products/data/source/product_remote_data_source.dart';
 import 'package:dio/dio.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ProductRemoteDataSourceImpl implements ProductRemoteDataSource {
   final Dio dio;
@@ -89,34 +91,33 @@ class ProductRemoteDataSourceImpl implements ProductRemoteDataSource {
   }
 
   @override
-  Future<void> updateProduct(ProductModel product) async {
-    final formMap = {
-      'Name': product.name,
-      'Description': product.description,
-      'Price': product.price,
-      'CategoryId': product.categoryId,
-      'Currency': product.currency,
-      'ShopId': product.shopId,
-    };
+  Future<void> updateProduct(UpdateProductModel product) async {
+    FormData formData;
 
-    // ✅ تحقق إن كانت الصورة محلية (ليست رابط http)
-    if (product.image.isNotEmpty && !product.image.startsWith('http')) {
-      formMap['Image'] = await MultipartFile.fromFile(
-        product.image,
-        filename: product.image.split('/').last,
-      );
+    if (product.image is XFile) {
+      final file = product.image as XFile;
+      formData = FormData.fromMap({
+        'name': product.name,
+        'price': product.price,
+        'description': product.description,
+        'categoryId': product.categoryId,
+        'currency': product.currency,
+        'shopId': product.shopId,
+        'image': await MultipartFile.fromFile(file.path, filename: file.name),
+      });
+    } else {
+      formData = FormData.fromMap({
+        'name': product.name,
+        'price': product.price,
+        'description': product.description,
+        'categoryId': product.categoryId,
+        'currency': product.currency,
+        'shopId': product.shopId,
+        'image': product.image, // رابط الصورة القديمة
+      });
     }
-    print('🟢 Sending updated product:');
-    formMap.forEach(
-      (key, value) => print('$key => $value (${value.runtimeType})'),
-    );
-    final formData = FormData.fromMap(formMap);
 
-    final response = await dio.put('Product/${product.id}', data: formData);
-
-    if (response.statusCode != 200 || response.data['succeeded'] != true) {
-      throw Exception(response.data['errors'].toString());
-    }
+    await dio.put('/Product/${product.id}', data: formData);
   }
 
   @override

@@ -18,7 +18,7 @@ class SettingsScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.amber.shade300,
-        title: Center(child: Text('settings'.i18n)),
+        title: Center(child: Text('Settings'.i18n)),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -34,7 +34,7 @@ class SettingsScreen extends ConsumerWidget {
                 // );
               },
               icon: Icon(Icons.person_pin_outlined),
-              title: "Profile",
+              title: "Profile".i18n,
             ),
             // SettingsCardWidget(
             //   onTap: () {
@@ -55,10 +55,10 @@ class SettingsScreen extends ConsumerWidget {
               //about
               onTap: () {},
               icon: Icon(Icons.info),
-              title: "About",
+              title: "About".i18n,
             ),
             SettingsCardWidget(
-              //chees language
+              //choose language
               onTap: () {
                 showDialog(
                   context: context,
@@ -120,12 +120,11 @@ class SettingsScreen extends ConsumerWidget {
               title: "Theme".i18n,
             ),
             SettingsCardWidget(
-              // logout
               onTap: () {
                 ref.read(authNotifierProvider.notifier).logout();
               },
               icon: Icon(Icons.logout),
-              title: "Log Out".i18n,
+              title: "Logout".i18n,
             ),
           ],
         ),

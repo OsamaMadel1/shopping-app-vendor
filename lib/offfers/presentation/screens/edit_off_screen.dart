@@ -100,7 +100,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 //             // الحقول
 //             ReactiveTextInputWidget(
 //               prefixIcon: Icons.title,
-//               hint: 'Name Offer'.i18n,
+//               hint: 'Offer Name'.i18n,
 //               controllerName: 'nameOffer',
 //               color: Colors.black87,
 //             ),
@@ -347,7 +347,7 @@ class _EditOffScreenState extends ConsumerState<EditOffScreen> {
 
             ReactiveTextInputWidget(
               prefixIcon: Icons.title,
-              hint: 'Name Offer'.i18n,
+              hint: 'Offer Name'.i18n,
               controllerName: 'nameOffer',
               color: Colors.black87,
             ),

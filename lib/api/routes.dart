@@ -7,6 +7,7 @@ const String login = "Account/user/login";
 /// managment Products
 const String addProduct = "Product";
 const String getAllProducts = "Product";
+String updateProduct(String id) => "Product/$id";
 String getProductById(String id) => "Product/$id";
 String deleteProduct(String id) => "Product/$id";
 
@@ -18,5 +19,15 @@ String updateCategoy(String id) => "Category/$id";
 String deleteCategoy(String id) => "Category/$id";
 
 /// orders
-String getAllOrders = "Order";
+String getAllOrdersByShopId(String shopId) => "Order/$shopId";
 String getOrderById(String id) => "Order/$id";
+
+/// offers
+String getAllOffresByShopId(String shopId) => "Offer/$shopId";
+String getOfferById(String id) => "Offer/$id";
+const addOffer = "Offer";
+String updateOffer(String id) => "Offer/$id";
+String deleteOffer(String id) => "Offer/$id";
+
+/// comments
+String getCommentsByProductId(String productId) => "Rate/comment/$productId";

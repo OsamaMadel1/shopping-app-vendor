@@ -50,7 +50,7 @@ class PersonalInfoStep extends StatelessWidget {
               ),
               const SizedBox(width: 8),
               TextWidget(
-                text: gender == GenderEntity.male ? 'male'.i18n : 'femal'.i18n,
+                text: gender == GenderEntity.male ? 'male'.i18n : 'Female'.i18n,
               ),
             ],
           ),

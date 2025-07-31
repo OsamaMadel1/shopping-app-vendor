@@ -1,6 +1,8 @@
 import 'package:app_vendor/mangment_products/data/models/product_model.dart';
+import 'package:app_vendor/mangment_products/data/models/update_product_model.dart';
 import 'package:app_vendor/mangment_products/data/source/product_remote_data_source.dart';
 import 'package:app_vendor/mangment_products/domain/entities/product_entity.dart';
+import 'package:app_vendor/mangment_products/domain/entities/update_product_entity.dart';
 import 'package:app_vendor/mangment_products/domain/repositories/product_repository.dart';
 
 class ProductRepositoryImpl implements ProductRepository {
@@ -23,8 +25,8 @@ class ProductRepositoryImpl implements ProductRepository {
   }
 
   @override
-  Future<void> updateProduct(ProductEntity product) async {
-    final productModel = ProductModel(
+  Future<void> updateProduct(UpdateProductEntity product) async {
+    final updateProductModel = UpdateProductModel(
       id: product.id,
       name: product.name,
       description: product.description,
@@ -34,7 +36,7 @@ class ProductRepositoryImpl implements ProductRepository {
       currency: product.currency,
       shopId: product.shopId,
     );
-    await productRemoteDataSource.updateProduct(productModel);
+    await productRemoteDataSource.updateProduct(updateProductModel);
   }
 
   @override
@@ -52,7 +54,7 @@ class ProductRepositoryImpl implements ProductRepository {
       shopId,
       categoryName,
     );
-    return models.map((e) => e as ProductEntity).toList();
+    return models;
   }
 
   // @override
