@@ -63,6 +63,7 @@ class _MyAppState extends ConsumerState<MyApp> {
     }
 
     return MaterialApp.router(
+      theme: ThemeData(fontFamily: 'Cairo'),
       builder: BotToastInit(),
       debugShowCheckedModeBanner: false,
       routerConfig: ref.watch(router),
