@@ -1,4 +1,5 @@
 import 'package:app_vendor/authentication/application/providers/auth_notifier_provider.dart';
+import 'package:app_vendor/orders/application/order_state.dart';
 import 'package:app_vendor/orders/application/providers/order_notifier_provider.dart';
 import 'package:app_vendor/translations.dart';
 import 'package:flutter/material.dart';
@@ -13,17 +14,25 @@ class OrdersScreen extends ConsumerStatefulWidget {
 }
 
 class _OrdersScreenState extends ConsumerState<OrdersScreen> {
+  late String? shopId;
+
   @override
   void initState() {
     super.initState();
-
-    Future.microtask(() {
-      final shop = ref.read(authNotifierProvider); // ✅ الصواب
-      final shopId = shop.shopId;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final shop = ref.read(authNotifierProvider);
+      shopId = shop.shopId;
       if (shopId != null) {
-        ref.read(orderNotifierProvider.notifier).loadOrders(shopId);
+        print('📦 Initializing orders for shopId: $shopId');
+        ref.read(orderNotifierProvider.notifier).loadOrders(shopId!);
       }
     });
+  }
+
+  Future<void> _refreshOrders() async {
+    if (shopId != null) {
+      await ref.read(orderNotifierProvider.notifier).loadOrders(shopId!);
+    }
   }
 
   @override
@@ -32,43 +41,45 @@ class _OrdersScreenState extends ConsumerState<OrdersScreen> {
 
     return Scaffold(
       appBar: AppBar(title: Center(child: Text('orders'.i18n))),
-      body: Builder(
-        builder: (context) {
-          if (state.isLoading) {
-            return const Center(child: CircularProgressIndicator());
-          }
-
-          if (state.error != null) {
-            return Center(child: Text('حدث خطأ: ${state.error}'));
-          }
-
-          if (state.orders.isEmpty) {
+      body: state.when(
+        initial: () => const SizedBox.shrink(),
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (message) => Center(child: Text('حدث خطأ: $message')),
+        loaded: (orders) {
+          if (orders.isEmpty) {
             return Center(child: Text('not orders'.i18n));
           }
 
-          return ListView.builder(
-            itemCount: state.orders.length,
-            itemBuilder: (context, index) {
-              final order = state.orders[index];
-              return Card(
-                margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                child: ListTile(
-                  title: Text('order #${order.id.substring(0, 6)}'.i18n),
-                  subtitle: Text(
-                    'state: ${order.orderState}\n'
-                            'amount: ${order.totalAmount}'
-                        .i18n,
+          return RefreshIndicator(
+            onRefresh: _refreshOrders,
+            child: ListView.builder(
+              physics: const AlwaysScrollableScrollPhysics(),
+              itemCount: orders.length,
+              itemBuilder: (context, index) {
+                final order = orders[index];
+                return Card(
+                  margin: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 8,
                   ),
-                  trailing: const Icon(Icons.arrow_forward_ios),
-                  onTap: () {
-                    context.pushNamed(
-                      'orderDetailsScreen',
-                      pathParameters: {'id': order.id},
-                    );
-                  },
-                ),
-              );
-            },
+                  child: ListTile(
+                    title: Text(
+                      '${'order'.i18n} #${order.id.length <= 6 ? order.id : order.id.substring(0, 6)}',
+                    ),
+                    subtitle: Text(
+                      '${'Status'.i18n}: ${order.orderState}\n${'total amount'.i18n}: ${order.totalAmount}',
+                    ),
+                    trailing: const Icon(Icons.arrow_forward_ios),
+                    onTap: () {
+                      context.pushNamed(
+                        'orderDetailsScreen',
+                        pathParameters: {'id': order.id},
+                      );
+                    },
+                  ),
+                );
+              },
+            ),
           );
         },
       ),

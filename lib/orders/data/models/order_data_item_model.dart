@@ -1,10 +1,10 @@
 import 'package:app_vendor/orders/domain/entities/order_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-part 'order_item_model.g.dart';
+part 'order_data_item_model.g.dart';
 
 @JsonSerializable()
-class OrderItemModel {
+class OrderDataItemModel {
   final String id;
   final String productName;
   final String orderId;
@@ -12,7 +12,7 @@ class OrderItemModel {
   final int quantity;
   final double price;
 
-  OrderItemModel({
+  OrderDataItemModel({
     required this.id,
     required this.productName,
     required this.orderId,
@@ -21,10 +21,10 @@ class OrderItemModel {
     required this.price,
   });
 
-  factory OrderItemModel.fromJson(Map<String, dynamic> json) =>
-      _$OrderItemModelFromJson(json);
+  factory OrderDataItemModel.fromJson(Map<String, dynamic> json) =>
+      _$OrderDataItemModelFromJson(json);
 
-  Map<String, dynamic> toJson() => _$OrderItemModelToJson(this);
+  Map<String, dynamic> toJson() => _$OrderDataItemModelToJson(this);
 
   OrderItemEntity toEntity() {
     return OrderItemEntity(
@@ -36,4 +36,15 @@ class OrderItemModel {
       price: price,
     );
   }
+
+  /// 🔁 تحويل من Entity (لو احتجتها)
+  factory OrderDataItemModel.fromEntity(OrderItemEntity entity) =>
+      OrderDataItemModel(
+        id: entity.id,
+        productName: entity.productName,
+        orderId: entity.orderId,
+        productId: entity.productId,
+        quantity: entity.quantity,
+        price: entity.price,
+      );
 }

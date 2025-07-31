@@ -1,6 +1,7 @@
-import 'package:app_vendor/orders/data/models/order_model.dart';
+import 'package:app_vendor/api/errors/exceptions.dart';
+import 'package:app_vendor/api/response/response_model.dart';
+import 'package:app_vendor/orders/data/models/order_data_model.dart';
 import 'package:dio/dio.dart';
-
 import 'order_remote_data_source.dart';
 
 class OrderRemoteDataSourceImpl implements OrderRemoteDataSource {
@@ -9,45 +10,47 @@ class OrderRemoteDataSourceImpl implements OrderRemoteDataSource {
   OrderRemoteDataSourceImpl(this.dio);
 
   @override
-  Future<List<OrderModel>> getOrdersByshopId(String shopId) async {
-    final response = await dio.get(
-      'Order',
-      queryParameters: {'shopId': shopId},
-    );
+  Future<List<OrderDataModel>> getOrdersByshopId(String shopId) async {
+    try {
+      final response = await dio.get(
+        'Order',
+        queryParameters: {'shopId': shopId},
+      );
 
-    if (response.statusCode == 200 && response.data['succeeded'] == true) {
-      final data = response.data['data'] as List;
-      return data.map((e) => OrderModel.fromJson(e)).toList();
-    } else {
-      throw Exception('فشل في جلب الطلبات');
+      print('response.data: ${response.data}');
+
+      final result = ResponseModel<List<OrderDataModel>>.fromJson(
+        response.data,
+        (json) => (json as List)
+            .map((e) => OrderDataModel.fromJson(e as Map<String, dynamic>))
+            .toList(),
+      );
+      print('result.data: ${result.data}');
+      return result.data ?? [];
+    } catch (e, stackTrace) {
+      final message = Exceptions.getMessage(e);
+      print('❌ Exception: $e');
+      print('📍 StackTrace: $stackTrace');
+      throw Exception(message);
     }
   }
-  //   @override
-  // Future<List<OrderModel>> getOrdersByshopId(String shopId) async {
-  //   final response = await dio.get(
-  //     'Order',
-  //     queryParameters: {'shopId': shopId},
-  //   );
 
-  //   if (response.statusCode == 200 && response.data['succeeded'] == true) {
-  //     final rawData = response.data['data'];
-  //     if (rawData is List) {
-  //       return rawData.map((e) => OrderModel.fromJson(e)).toList();
-  //     } else {
-  //       return []; // لا يوجد بيانات
-  //     }
-  //   } else {
-  //     throw Exception('فشل في جلب الطلبات');
-  //   }
-  // }
   @override
-  Future<OrderModel> getOrderById(String orderId) async {
-    final response = await dio.get('Order/$orderId');
+  Future<OrderDataModel> getOrderById(String orderId) async {
+    try {
+      final response = await dio.get('Order/$orderId');
 
-    if (response.statusCode == 200 && response.data['succeeded'] == true) {
-      return OrderModel.fromJson(response.data['data']);
-    } else {
-      throw Exception('فشل في جلب تفاصيل الطلب');
+      final result = ResponseModel<OrderDataModel>.fromJson(
+        response.data,
+        (json) => OrderDataModel.fromJson(json as Map<String, dynamic>),
+      );
+
+      return result.data!;
+    } catch (e) {
+      // تعامل مع أي خطأ من نوع Dio أو غيره باستخدام Exceptions
+      final message = Exceptions.getMessage(e);
+      print('Error fetching order by ID: $message');
+      throw Exception(message);
     }
   }
 }
