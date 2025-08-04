@@ -81,29 +81,45 @@ class _SelectProductForOffScreenState
                     if (!context.mounted) return;
                     Navigator.pop(context, {'product': product, 'image': file});
                   },
-                  child: Card(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Expanded(
-                          child: product.image.isNotEmpty
-                              ? Image.network(
-                                  product.image,
-                                  fit: BoxFit.cover,
-                                  errorBuilder: (_, __, ___) =>
-                                      const Icon(Icons.broken_image),
-                                )
-                              : const Icon(Icons.image),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            product.name,
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(fontWeight: FontWeight.bold),
+                  child: SizedBox(
+                    height: 320,
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      elevation: 4,
+                      // color: Colors.white,
+                      // shadowColor: Colors.grey.shade300,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Expanded(
+                            child: product.image.isNotEmpty
+                                ? ClipRRect(
+                                    borderRadius: const BorderRadius.vertical(
+                                      top: Radius.circular(15),
+                                    ),
+                                    child: Image.network(
+                                      product.image,
+                                      fit: BoxFit.cover,
+                                      errorBuilder: (_, __, ___) =>
+                                          const Icon(Icons.broken_image),
+                                    ),
+                                  )
+                                : const Icon(Icons.image),
                           ),
-                        ),
-                      ],
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              product.name,
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 );

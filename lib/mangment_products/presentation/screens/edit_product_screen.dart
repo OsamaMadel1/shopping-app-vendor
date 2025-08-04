@@ -6,7 +6,6 @@ import 'package:app_vendor/core/presentation/widgets/reactive_text_input_widget.
 import 'package:app_vendor/mangment_products/application/product_state.dart';
 import 'package:app_vendor/mangment_products/application/providers/product_notifier_provider.dart';
 import 'package:app_vendor/mangment_products/domain/entities/product_entity.dart';
-import 'package:app_vendor/mangment_products/domain/entities/update_product_entity.dart';
 import 'package:app_vendor/permissions/permission_handler.dart';
 import 'package:app_vendor/translations.dart';
 import 'package:flutter/material.dart';
@@ -230,7 +229,7 @@ class EditProductScreen extends ConsumerWidget {
                                   return;
                                 }
 
-                                final updatedProduct = UpdateProductEntity(
+                                final updatedProduct = ProductEntity(
                                   id: product.id,
                                   name: name,
                                   price: price,

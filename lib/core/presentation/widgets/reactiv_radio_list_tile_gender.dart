@@ -17,11 +17,13 @@ class ReactivRadioListTileGender extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Container(
       margin: const EdgeInsets.only(bottom: 4),
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey.shade400),
+        border: Border.all(color: theme.dividerColor),
         borderRadius: BorderRadius.circular(8),
       ),
       child: ReactiveRadioListTile<GenderEntity>(
@@ -29,11 +31,14 @@ class ReactivRadioListTileGender extends StatelessWidget {
         value: gender,
         title: Text(
           label.i18n,
-          style: TextStyle(fontSize: 14, color: Colors.teal[300]),
+          style: theme.textTheme.bodyMedium?.copyWith(
+            color: theme.textTheme.bodyMedium?.color,
+          ),
         ),
         visualDensity: VisualDensity.compact,
         contentPadding: EdgeInsets.zero,
         controlAffinity: ListTileControlAffinity.leading,
+        activeColor: theme.colorScheme.primary,
       ),
     );
   }

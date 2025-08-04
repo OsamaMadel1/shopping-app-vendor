@@ -7,9 +7,9 @@ import 'package:app_vendor/authentication/domain/value_objects/address_entity.da
 import 'package:app_vendor/authentication/presentation/screens/singup_screen/address_info_step.dart';
 import 'package:app_vendor/authentication/presentation/screens/singup_screen/contact_info_step.dart';
 import 'package:app_vendor/authentication/presentation/screens/singup_screen/personal_info_step.dart';
+import 'package:app_vendor/core/constant/color.dart';
 import 'package:app_vendor/core/presentation/widgets/button_widget.dart';
 import 'package:app_vendor/core/presentation/widgets/text_widget.dart';
-import 'package:app_vendor/core/presentation/widgets/wid/colors.dart';
 import 'package:app_vendor/translations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -29,7 +29,6 @@ class SignupScreen extends ConsumerWidget {
     final currentStep = ref.watch(stepProvider);
     final authState = ref.watch(authNotifierProvider);
     final authNotifier = ref.read(authNotifierProvider.notifier);
-    final theme = Theme.of(context);
     final size = MediaQuery.of(context).size;
 
     ref.listen<AuthState>(authNotifierProvider, (previous, next) {
@@ -37,7 +36,10 @@ class SignupScreen extends ConsumerWidget {
         context.go('/mainScreen');
       } else if (next.status == AuthStatus.error && next.error != null) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(next.error!), backgroundColor: Colors.red),
+          SnackBar(
+            content: Text(next.error!),
+            // backgroundColor: Colors.red
+          ),
         );
       }
     });
@@ -53,7 +55,10 @@ class SignupScreen extends ConsumerWidget {
                 style: TextStyle(
                   color: Colors.white,
                   shadows: [
-                    Shadow(color: Colors.black, blurRadius: 3),
+                    Shadow(
+                      // color: Colors.black,
+                      blurRadius: 3,
+                    ),
                   ],
                 ),
               ),
@@ -61,18 +66,18 @@ class SignupScreen extends ConsumerWidget {
               background: Container(
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
-                    colors: const [
-                      Color(0xff5673cc),
-                      Color(0xff76c6f2),
-                    ],
+                    colors: const [Color(0xff5673cc), Color(0xff76c6f2)],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   ),
                 ),
                 child: SafeArea(
                   child: Center(
-                    child: Icon(Icons.person_add,
-                        size: 80, color: Colors.white.withOpacity(0.8)),
+                    child: Icon(
+                      Icons.person_add,
+                      size: 80,
+                      color: Colors.white.withOpacity(0.8),
+                    ),
                   ),
                 ),
               ),
@@ -91,24 +96,21 @@ class SignupScreen extends ConsumerWidget {
                       const Gap(15),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: List.generate(
-                          3,
-                          (index) {
-                            final isActive = index == currentStep;
-                            return AnimatedContainer(
-                              duration: const Duration(milliseconds: 300),
-                              margin: const EdgeInsets.symmetric(horizontal: 6),
-                              width: isActive ? 16 : 10,
-                              height: 10,
-                              decoration: BoxDecoration(
-                                color: isActive
-                                    ? AppColor.kPrimaryColor
-                                    : Colors.grey.shade300,
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                            );
-                          },
-                        ),
+                        children: List.generate(3, (index) {
+                          final isActive = index == currentStep;
+                          return AnimatedContainer(
+                            duration: const Duration(milliseconds: 300),
+                            margin: const EdgeInsets.symmetric(horizontal: 6),
+                            width: isActive ? 16 : 10,
+                            height: 10,
+                            decoration: BoxDecoration(
+                              color: isActive
+                                  ? AppColor.kPrimaryColor
+                                  : Colors.grey.shade300,
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                          );
+                        }),
                       ),
                       const Gap(15),
                       Expanded(
@@ -125,31 +127,33 @@ class SignupScreen extends ConsumerWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           if (currentStep > 0)
-                            ButtonWidget(
-                              onTap: () {
+                            ElevatedButton(
+                              onPressed: () {
                                 ref.read(stepProvider.notifier).state--;
                               },
-                              text: "Back".i18n,
+                              child: Text("Back".i18n),
                             ),
                           const Spacer(),
                           ReactiveFormConsumer(
                             builder: (context, formGroup, child) {
                               final isLastStep = currentStep == 2;
 
-                              return ButtonWidget(
-                                text: isLastStep ? "Sign Up".i18n : "Next".i18n,
-                                isLoading:
-                                    authState.status == AuthStatus.loading,
-                                onTap: () async {
-                                  final currentStepIndex =
-                                      ref.read(stepProvider);
+                              return ElevatedButton(
+                                child: Text(
+                                  isLastStep ? "Sign Up".i18n : "Next".i18n,
+                                ),
+                                // isLoading:
+                                //     authState.status == AuthStatus.loading,
+                                onPressed: () async {
+                                  final currentStepIndex = ref.read(
+                                    stepProvider,
+                                  );
                                   bool isStepValid = false;
 
                                   switch (currentStepIndex) {
                                     case 0:
-                                      isStepValid = form
-                                              .control('firstName')
-                                              .valid &&
+                                      isStepValid =
+                                          form.control('firstName').valid &&
                                           form.control('lastName').valid &&
                                           // form.control('dateOfBirth').valid &&
                                           form.control('gender').valid;
@@ -157,18 +161,18 @@ class SignupScreen extends ConsumerWidget {
                                     case 1:
                                       isStepValid =
                                           form.control('email').valid &&
-                                              form.control('password').valid &&
-                                              form
-                                                  .control('confirmPassword')
-                                                  .valid &&
-                                              form.control('phone').valid;
+                                          form.control('password').valid &&
+                                          form
+                                              .control('confirmPassword')
+                                              .valid &&
+                                          form.control('phone').valid;
                                       break;
                                     case 2:
                                       isStepValid =
                                           form.control('city').valid &&
-                                              form.control('street').valid &&
-                                              form.control('floor').valid &&
-                                              form.control('apartment').valid;
+                                          form.control('street').valid &&
+                                          form.control('floor').valid &&
+                                          form.control('apartment').valid;
                                       // &&
                                       // form.control('hasApartment').valid;
                                       break;
@@ -195,16 +199,14 @@ class SignupScreen extends ConsumerWidget {
                         children: [
                           Text(
                             "Do you already have an account?".i18n,
-                            style: TextStyle(color: Colors.grey.shade400),
+                            // style: TextStyle(color: Colors.grey.shade400),
                           ),
                           Gap(3),
                           TextButton(
                             onPressed: () {
                               context.push("/login");
                             },
-                            child: TextWidget(
-                              text: 'login'.i18n,
-                            ),
+                            child: TextWidget(text: 'login'.i18n),
                           ),
                         ],
                       ),

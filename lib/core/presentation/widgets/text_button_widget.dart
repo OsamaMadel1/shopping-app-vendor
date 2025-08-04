@@ -9,17 +9,29 @@ class TextButtonWidget extends StatelessWidget {
     this.size,
     this.foregroundColor,
   });
+
   final String text;
-  final Function()? onTap;
+  final VoidCallback? onTap;
   final double? size;
   final Color? foregroundColor;
 
   @override
   Widget build(BuildContext context) {
+    final baseStyle = Theme.of(context).textTheme.bodyMedium;
+
     return TextButton(
-      style: TextButton.styleFrom(foregroundColor: foregroundColor),
       onPressed: onTap,
-      child: Text(text.i18n, style: TextStyle(fontSize: size)),
+      style: TextButton.styleFrom(
+        foregroundColor:
+            foregroundColor ?? Theme.of(context).colorScheme.primary,
+      ),
+      child: Text(
+        text.i18n,
+        style: baseStyle?.copyWith(
+          fontSize: size ?? baseStyle.fontSize,
+          color: foregroundColor ?? baseStyle.color,
+        ),
+      ),
     );
   }
 }

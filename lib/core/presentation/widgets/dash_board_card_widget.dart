@@ -3,30 +3,37 @@ import 'package:flutter/material.dart';
 class DashBoardCardWidget extends StatelessWidget {
   final IconData icon;
   final String text;
-  final Color backgroundColor;
-  final Color iconColor;
+  final Color? backgroundColor;
+  final Color? iconColor;
   final VoidCallback? onTap;
 
   const DashBoardCardWidget({
     super.key,
     required this.icon,
     required this.text,
-    required this.backgroundColor,
-    required this.iconColor,
+    this.backgroundColor,
+    this.iconColor,
     this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    final bgColor = backgroundColor ?? colorScheme.surface;
+    final iColor = iconColor ?? colorScheme.primary;
+    final shadowColor = colorScheme.shadow.withOpacity(0.15);
+    final textColor = colorScheme.onSurface;
+
     return GestureDetector(
       onTap: onTap,
       child: Container(
         decoration: BoxDecoration(
-          color: backgroundColor,
+          color: bgColor,
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withOpacity(0.15),
+              color: shadowColor,
               blurRadius: 10,
               offset: const Offset(0, 4),
             ),
@@ -38,23 +45,19 @@ class DashBoardCardWidget extends StatelessWidget {
           children: [
             Container(
               decoration: BoxDecoration(
-                color: iconColor.withOpacity(0.1),
+                color: iColor.withOpacity(0.1),
                 shape: BoxShape.circle,
               ),
               padding: const EdgeInsets.all(16),
-              child: Icon(
-                icon,
-                color: iconColor,
-                size: 32,
-              ),
+              child: Icon(icon, color: iColor, size: 32),
             ),
             const SizedBox(height: 16),
             Text(
               text,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
-                color: Colors.black87,
+                color: textColor,
               ),
               textAlign: TextAlign.center,
             ),

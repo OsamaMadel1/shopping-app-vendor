@@ -68,7 +68,7 @@ class ProductDetailsScreen extends ConsumerWidget {
                             child: Icon(
                               Icons.broken_image,
                               size: 60,
-                              color: Colors.grey,
+                              // color: Colors.grey,
                             ),
                           ),
                         ),
@@ -76,9 +76,7 @@ class ProductDetailsScreen extends ConsumerWidget {
                     ),
                   ),
                 ),
-
-                const Gap(10),
-
+                const Gap(13),
                 // ✅ الاسم والسعر
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -90,24 +88,21 @@ class ProductDetailsScreen extends ConsumerWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
+                    Row(
+                      children: [
+                        Text(
+                          '${'Category'.i18n}: ${product.categoryName ?? "not".i18n}',
+                        ),
+                        Icon(Icons.category_rounded),
+                      ],
+                    ),
                     Text(
-                      '${product.currency}${product.price.toStringAsFixed(2)}',
+                      '${product.currency == 'USD' ? '\$' : 'E'}${product.price.toStringAsFixed(2)}',
                       style: const TextStyle(fontSize: 16),
                     ),
                   ],
                 ),
-
-                const Gap(10),
-
-                // ✅ التصنيف
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    'categorey: ${product.categoryName ?? "not".i18n}',
-                  ),
-                ),
-
-                const Gap(10),
+                const Gap(13),
 
                 // ✅ الوصف داخل Scroll مع مساحة مرنة
                 Expanded(
@@ -124,7 +119,7 @@ class ProductDetailsScreen extends ConsumerWidget {
                             : 'not description'.i18n,
                         style: const TextStyle(
                           fontSize: 16,
-                          color: Colors.grey,
+                          // color: Colors.grey,
                         ),
                       ),
                     ),
@@ -145,7 +140,7 @@ class ProductDetailsScreen extends ConsumerWidget {
                         icon: const Icon(Icons.edit_outlined),
                         label: Text('update'.i18n),
                         style: FilledButton.styleFrom(
-                          backgroundColor: Colors.orange[700],
+                          // backgroundColor: Colors.orange[700],
                           padding: const EdgeInsets.symmetric(vertical: 16),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
@@ -185,7 +180,7 @@ class ProductDetailsScreen extends ConsumerWidget {
                                 },
                                 child: Text(
                                   'delete'.i18n,
-                                  style: const TextStyle(color: Colors.red),
+                                  // style: const TextStyle(color: Colors.red),
                                 ),
                               ),
                             ],

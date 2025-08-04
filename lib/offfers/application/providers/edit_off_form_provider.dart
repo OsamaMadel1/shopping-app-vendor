@@ -15,7 +15,8 @@ final editOffFormProvider = Provider.family<FormGroup, OffEntity>((ref, off) {
       validators: [
         Validators.required,
         // Validators.number(),
-        Validators.min(0.1),
+        Validators.min(1),
+        Validators.max(99),
       ],
     ),
     'newPrice': FormControl<double>(
@@ -33,6 +34,12 @@ final editOffFormProvider = Provider.family<FormGroup, OffEntity>((ref, off) {
       value: off.endDate,
       validators: [Validators.required],
     ),
-    'oldPrice': FormControl<double>(), // لا نحتاج تحقق لأنه يُحسب تلقائيًا
+    'oldPrice': FormControl<double>(
+      validators: [
+        Validators.required,
+        // Validators.number(),
+        Validators.min(0.001),
+      ],
+    ),
   });
 });

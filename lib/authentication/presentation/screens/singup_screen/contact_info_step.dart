@@ -1,7 +1,6 @@
 import 'package:app_vendor/core/presentation/widgets/reactive_password_input_widget.dart';
 import 'package:app_vendor/core/presentation/widgets/reactive_phone_widget.dart';
 import 'package:app_vendor/core/presentation/widgets/reactive_text_input_widget.dart';
-import 'package:app_vendor/core/presentation/widgets/wid/colors.dart';
 import 'package:app_vendor/translations.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -19,7 +18,7 @@ class ContactInfoStep extends StatelessWidget {
             style: TextStyle(
               fontSize: 28,
               fontWeight: FontWeight.bold,
-              color: AppColor.kPrimaryColor,
+              // color: AppColor.kPrimaryColor,
             ),
           ),
         ),

@@ -23,7 +23,7 @@ class _OrdersScreenState extends ConsumerState<OrdersScreen> {
       final shop = ref.read(authNotifierProvider);
       shopId = shop.shopId;
       if (shopId != null) {
-        print('📦 Initializing orders for shopId: $shopId');
+        // print('📦 Initializing orders for shopId: $shopId');
         ref.read(orderNotifierProvider.notifier).loadOrders(shopId!);
       }
     });
@@ -44,7 +44,7 @@ class _OrdersScreenState extends ConsumerState<OrdersScreen> {
       body: state.when(
         initial: () => const SizedBox.shrink(),
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (message) => Center(child: Text('حدث خطأ: $message')),
+        error: (message) => Center(child: Text('حدث خطأ: $message'.i18n)),
         loaded: (orders) {
           if (orders.isEmpty) {
             return Center(child: Text('not orders'.i18n));
@@ -64,7 +64,7 @@ class _OrdersScreenState extends ConsumerState<OrdersScreen> {
                   ),
                   child: ListTile(
                     title: Text(
-                      '${'order'.i18n} #${order.id.length <= 6 ? order.id : order.id.substring(0, 6)}',
+                      '${'Order Id'.i18n} #${order.id.length <= 6 ? order.id : order.id.substring(0, 6)}',
                     ),
                     subtitle: Text(
                       '${'Status'.i18n}: ${order.orderState}\n${'total amount'.i18n}: ${order.totalAmount}',

@@ -1,6 +1,4 @@
-import 'package:app_vendor/core/presentation/widgets/reactive_checkbox_list_tile_apartment.dart';
 import 'package:app_vendor/core/presentation/widgets/reactive_text_input_widget.dart';
-import 'package:app_vendor/core/presentation/widgets/wid/colors.dart';
 import 'package:app_vendor/translations.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -15,11 +13,7 @@ class AddressInfoStep extends StatelessWidget {
         Center(
           child: Text(
             'address information'.i18n,
-            style: TextStyle(
-              fontSize: 28,
-              fontWeight: FontWeight.bold,
-              color: AppColor.kPrimaryColor,
-            ),
+            style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
           ),
         ),
         ReactiveTextInputWidget(
@@ -49,6 +43,7 @@ class AddressInfoStep extends StatelessWidget {
                 hint: "Apartment".i18n,
                 controllerName: "apartment",
                 prefixIcon: Icons.home,
+                keyboardType: TextInputType.number,
               ),
             ),
           ],

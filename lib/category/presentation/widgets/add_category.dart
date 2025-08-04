@@ -42,7 +42,7 @@ class AddCategory extends ConsumerWidget {
                           ReactiveTextInputWidget(
                             hint: 'name category'.i18n,
                             controllerName: 'name',
-                            color: Colors.black,
+                            // color: Colors.black,
                           ),
                           const Gap(10),
                           ReactiveFormConsumer(

@@ -40,7 +40,7 @@
   "Control Panel": "Control Panel",
   "Products": "Products",
   "Orders": "Orders",
-  "Repoters": "Reports",
+  "Reporters": "Reporters",
   "Sales": "Sales",
   "enter name product": "Enter Product Name",
   "address information": "Address Information",
@@ -95,7 +95,6 @@
   "select gender": "Select Gender",
   "contact information": "Contact Information",
   "add product": "Add Product",
-  "price": "Price",
   "Category Name": "Category Name",
   "cancel": "Cancel",
   "add": "Add",
@@ -163,7 +162,7 @@
   "New Price": "New Price",
   "Choose a date": "Choose a date",
   "Choose a time": "Choose a time",
-  "Discount Percentage": "Discount Percentage"
+  "Discount Percentage": "Discount Percentage",
   "Comment": "Comment",
   "Comments": "Comments",
   "Add Comment": "Add Comment",
@@ -195,6 +194,22 @@
   "Reply Time": "Reply Time",
   "Reply ID": "Reply ID",
   "Choose a Product": "Choose a Product",
-  "Please select an image": " Please select an image"
+  "Please select an image": " Please select an image",
+  "All your tools in one place": "All your tools in one place",
+  "Welcome to our app, where you can manage your products, orders, and more.": "Welcome to our app, where you can manage your products, orders, and more.",
+  "Publish your products fast": "Publish your products fast",
+  "Upload images, set prices, and start selling.": "Upload images, set prices, and start selling.",
+  "Grow your business confidently": "Grow your business confidently",
+  "Track performance, offers, and sales.": "Track performance, offers, and sales.",
+  "Get Started": "Get Started",
+  "Next": "Next",
+  "Previous": "Previous",
+  "Name": "Name",
+  "End In": "End In",
+  "Name Offer": "Name Offer",
+  "Details Offer": "Details Offer",
+  "Update": "Update",
+  "Delete": "Delete"
+  
 }
 

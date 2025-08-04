@@ -3,11 +3,12 @@
 //import 'package:app/core/presentation/screens/welcome_screen.dart';
 import 'package:app_vendor/authentication/application/auth_state.dart';
 import 'package:app_vendor/authentication/application/providers/auth_notifier_provider.dart';
+// import 'package:app_vendor/authentication/data/providers/dio_provider.dart';
 import 'package:app_vendor/authentication/presentation/screens/login_screen.dart';
 import 'package:app_vendor/authentication/presentation/screens/singup_screen/signup_screen.dart';
 import 'package:app_vendor/comments/presentation/comment_screen.dart';
 import 'package:app_vendor/core/presentation/screens/home_screen.dart';
-import 'package:app_vendor/core/presentation/screens/main_screen.dart';
+// import 'package:app_vendor/core/presentation/screens/onboarding_screen.dart';
 import 'package:app_vendor/mangment_products/domain/entities/product_entity.dart';
 import 'package:app_vendor/mangment_products/presentation/screens/add_product_screen.dart';
 import 'package:app_vendor/mangment_products/presentation/screens/edit_product_screen.dart';
@@ -28,9 +29,12 @@ final router = Provider<GoRouter>((ref) {
   final authState = ref.watch(
     authNotifierProvider,
   ); //المراقبة المباشرة لحالة المصادقة
-
+  // final sharedPrefs = ref.watch(sharedPrefsProvider);
+  // final seenOnboarding = sharedPrefs.getBool('seen_onboarding') ?? false;
+  // print('seenOnboarding: $seenOnboarding');
   return GoRouter(
-    initialLocation: "/login",
+    // initialLocation: seenOnboarding ? "/login" : "/",
+    initialLocation: '/homeScreen',
     observers: [BotToastNavigatorObserver()],
     redirect: (context, state) {
       //print('🔄 Redirect: ${state.matchedLocation}, Auth: ${authState.status}');
@@ -50,6 +54,10 @@ final router = Provider<GoRouter>((ref) {
         return '/login'; // نعيده لشاشة الدخول
       }
 
+      // if (seenOnboarding && state.matchedLocation == '/') {
+      //   return '/login';
+      // }
+
       // إذا المستخدم مسجل دخول ويحاول يروح لشاشات تسجيل الدخول أو التسجيل
       if (isAuthenticated && isLoggingIn) {
         //return '/mainScreen'; // نعيده للشاشة الرئيسية
@@ -62,8 +70,8 @@ final router = Provider<GoRouter>((ref) {
     routes: [
       // GoRoute(
       //   path: "/",
-      //   name: "welcomeScreen",
-      //   builder: (context, state) => WelcomeScreen(),
+      //   name: "onboardingScreen",
+      //   builder: (context, state) => OnboardingScreen(),
       // ),
 
       // =================================
@@ -81,12 +89,11 @@ final router = Provider<GoRouter>((ref) {
       ),
 
       //-----------------------------------------
-      GoRoute(
-        path: "/mainScreen",
-        name: "mainScreen",
-        builder: (context, state) => MainScreen(),
-      ),
-
+      // GoRoute(
+      //   path: "/mainScreen",
+      //   name: "mainScreen",
+      //   builder: (context, state) => MainScreen(),
+      // ),
       GoRoute(
         path: "/homeScreen",
         name: "homeScreen",

@@ -4,9 +4,7 @@ import 'package:app_vendor/translations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:local_hero/local_hero.dart';
-import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
-import 'package:app_vendor/core/presentation/widgets/button_widget.dart';
 import 'package:app_vendor/category/presentation/widgets/category_select_dialog.dart';
 import 'package:app_vendor/mangment_products/application/providers/product_notifier_provider.dart';
 import 'package:app_vendor/mangment_products/application/product_state.dart';
@@ -46,7 +44,7 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('product Screen'.i18n),
-        backgroundColor: Colors.amber.shade300,
+        // backgroundColor: Colors.amber.shade300,
         actions: [
           // IconButton(
           //   icon: Icon(_isGrid ? Icons.grid_view : Icons.view_list),
@@ -88,9 +86,9 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
           Expanded(child: _buildBody(productState)),
           Padding(
             padding: const EdgeInsets.all(12.0),
-            child: ButtonWidget(
-              text: "add product".i18n,
-              onTap: () {
+            child: ElevatedButton(
+              child: Text("add product".i18n),
+              onPressed: () {
                 context.push('/addProductScreen');
               },
             ),
@@ -316,8 +314,8 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
               borderRadius: BorderRadius.circular(15),
             ),
             elevation: 4,
-            color: Colors.white,
-            shadowColor: Colors.grey.shade300,
+            // color: Colors.white,
+            // shadowColor: Colors.grey.shade300,
             child: Column(
               children: [
                 // المحتوى الحالي سواء Grid أو List:
@@ -361,14 +359,14 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                                   overflow: TextOverflow.ellipsis,
                                   style: const TextStyle(
                                     fontSize: 13,
-                                    color: Colors.black54,
+                                    // color: Colors.black54,
                                   ),
                                 ),
                                 const SizedBox(height: 6),
                                 Text(
-                                  'price: ${product.price}${product.currency}',
+                                  '${'Price'.i18n}: ${product.price}${product.currency == 'USD' ? '\$' : 'E'}',
                                   style: const TextStyle(
-                                    color: Colors.blue,
+                                    // color: Colors.blue,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
@@ -448,7 +446,7 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                     borderRadius: BorderRadius.vertical(
                       bottom: Radius.circular(15),
                     ),
-                    color: Colors.grey.shade100,
+                    // color: Colors.grey.shade100,
                   ),
                   padding: const EdgeInsets.symmetric(horizontal: 12),
                   height: 40,
@@ -465,7 +463,7 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                               'commentsScreen',
                               pathParameters: {'productId': product.id!},
                             );
-                            print('product id: ${product.id}');
+                            // print('product id: ${product.id}');
                           },
                           icon: const Icon(Icons.comment, size: 18),
                           label: const Text(''),
@@ -477,9 +475,9 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                         child: TextButton.icon(
                           onPressed: () {
                             // هنا يمكنك إضافة منطق اللايك، مثل تحديث حالة اللايك
-                            ScaffoldMessenger.of(
-                              context,
-                            ).showSnackBar(SnackBar(content: Text('Liked!')));
+                            // ScaffoldMessenger.of(
+                            //   context,
+                            // ).showSnackBar(SnackBar(content: Text('Liked!')));
                           },
                           icon: const Icon(Icons.thumb_up, size: 18),
                           label: const Text(''),

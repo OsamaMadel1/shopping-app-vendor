@@ -1,6 +1,5 @@
 import 'package:app_vendor/mangment_products/application/product_state.dart';
 import 'package:app_vendor/mangment_products/domain/entities/product_entity.dart';
-import 'package:app_vendor/mangment_products/domain/entities/update_product_entity.dart';
 import 'package:app_vendor/mangment_products/domain/usecases/add_product_usecase.dart';
 import 'package:app_vendor/mangment_products/domain/usecases/delete_product_usecase.dart';
 import 'package:app_vendor/mangment_products/domain/usecases/fetch_products_usecase.dart';
@@ -79,7 +78,7 @@ class ProductNotifier extends StateNotifier<ProductState> {
   //   }
   // }
 
-  Future<void> updateProduct(UpdateProductEntity product) async {
+  Future<void> updateProduct(ProductEntity product) async {
     try {
       await updateProductUseCase(product);
       await fetchProducts(

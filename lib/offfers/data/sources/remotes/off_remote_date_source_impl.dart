@@ -46,7 +46,7 @@ class OffRemoteDataSourceImpl implements OffRemoteDataSource {
         'NewPrice': off.newPrice,
         'StartDate': off.startDate.toIso8601String(),
         'EndDate': off.endDate.toIso8601String(),
-        if (off.image != null)
+        if (off.image != null && !off.image!.startsWith('http'))
           'Image': await MultipartFile.fromFile(off.image!),
       });
 

@@ -2,7 +2,6 @@ import 'package:app_vendor/authentication/domain/value_objects/gender_entity.dar
 import 'package:app_vendor/core/presentation/widgets/reactive_dropdown_gender_widget.dart';
 import 'package:app_vendor/core/presentation/widgets/reactive_text_input_widget.dart';
 import 'package:app_vendor/core/presentation/widgets/text_widget.dart';
-import 'package:app_vendor/core/presentation/widgets/wid/colors.dart';
 import 'package:app_vendor/translations.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -20,7 +19,7 @@ class PersonalInfoStep extends StatelessWidget {
             style: TextStyle(
               fontSize: 28,
               fontWeight: FontWeight.bold,
-              color: AppColor.kPrimaryColor,
+              // color: AppColor.kPrimaryColor,
             ),
           ),
         ),
@@ -46,7 +45,7 @@ class PersonalInfoStep extends StatelessWidget {
             children: [
               Icon(
                 gender == GenderEntity.male ? Icons.male : Icons.female,
-                color: AppColor.kPrimaryColor,
+                // color: AppColor.kPrimaryColor,
               ),
               const SizedBox(width: 8),
               TextWidget(

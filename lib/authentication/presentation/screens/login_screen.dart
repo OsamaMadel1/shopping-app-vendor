@@ -8,7 +8,7 @@ import 'package:app_vendor/core/presentation/widgets/button_widget.dart';
 import 'package:app_vendor/core/presentation/widgets/reactive_password_input_widget.dart';
 import 'package:app_vendor/core/presentation/widgets/reactive_text_input_widget.dart';
 import 'package:app_vendor/core/presentation/widgets/text_button_widget.dart';
-import 'package:app_vendor/core/presentation/widgets/wid/colors.dart';
+import 'package:app_vendor/core/presentation/widgets/text_widget.dart';
 import 'package:app_vendor/translations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -87,14 +87,14 @@ class LoginScreen extends ConsumerWidget {
                             "Welcome Back".i18n,
                             style: theme.textTheme.headlineSmall?.copyWith(
                               fontWeight: FontWeight.bold,
-                              color: AppColor.kPrimaryColor,
+                              // color: AppColor.kPrimaryColor,
                             ),
                           ),
                           Gap(8),
                           Text(
                             "welcome message".i18n,
                             style: theme.textTheme.bodyMedium?.copyWith(
-                              color: Colors.grey[600],
+                              // color: Colors.grey[600],
                             ),
                           ),
                         ],
@@ -137,10 +137,8 @@ class LoginScreen extends ConsumerWidget {
                     ReactiveFormConsumer(
                       builder: (context, formGroup, child) {
                         return Center(
-                          child: ButtonWidget(
-                            text: "Login".i18n,
-                            isLoading: authState.status == AuthStatus.loading,
-                            onTap: formGroup.invalid
+                          child: ElevatedButton(
+                            onPressed: formGroup.invalid
                                 ? null
                                 : () async {
                                     FocusScope.of(
@@ -163,6 +161,7 @@ class LoginScreen extends ConsumerWidget {
                                       ),
                                     );
                                   },
+                            child: Text("Login".i18n),
                           ),
                         );
                       },
@@ -174,20 +173,21 @@ class LoginScreen extends ConsumerWidget {
                         children: [
                           Text(
                             "Don't have an account?".i18n,
-                            style: TextStyle(color: Colors.grey),
+                            // style: TextStyle(color: Colors.grey),
                           ),
                           TextButton(
                             onPressed: () {
                               context.push("/signUp");
                             },
-                            child: Text(
-                              "SignUp".i18n,
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: AppColor.kPrimaryColor,
-                              ),
+                            child: TextWidget(
+                              text: "SignUp".i18n,
+                              color: theme.colorScheme.primary,
+
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
+
+                          // style: TextStyle(fontWeight: FontWeight.bold),
                         ],
                       ),
                     ),

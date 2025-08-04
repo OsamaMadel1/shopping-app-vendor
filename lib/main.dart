@@ -1,5 +1,7 @@
 import 'package:app_vendor/authentication/application/providers/auth_notifier_provider.dart';
 import 'package:app_vendor/authentication/data/providers/dio_provider.dart';
+import 'package:app_vendor/core/application/theme_provider.dart';
+import 'package:app_vendor/core/constant/theme.dart';
 import 'package:app_vendor/roters.dart';
 import 'package:app_vendor/translations.dart';
 import 'package:bot_toast/bot_toast.dart';
@@ -55,6 +57,7 @@ class _MyAppState extends ConsumerState<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = ref.watch(themeModeProvider);
     if (!_isInitialized) {
       // شاشة انتظار بسيطة
       return const MaterialApp(
@@ -63,7 +66,10 @@ class _MyAppState extends ConsumerState<MyApp> {
     }
 
     return MaterialApp.router(
-      theme: ThemeData(fontFamily: 'Cairo'),
+      theme: lightTheme,
+      darkTheme: darkTheme,
+      themeMode: theme,
+
       builder: BotToastInit(),
       debugShowCheckedModeBanner: false,
       routerConfig: ref.watch(router),

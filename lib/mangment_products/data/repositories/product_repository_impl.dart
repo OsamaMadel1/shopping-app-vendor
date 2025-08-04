@@ -1,8 +1,6 @@
 import 'package:app_vendor/mangment_products/data/models/product_model.dart';
-import 'package:app_vendor/mangment_products/data/models/update_product_model.dart';
 import 'package:app_vendor/mangment_products/data/source/product_remote_data_source.dart';
 import 'package:app_vendor/mangment_products/domain/entities/product_entity.dart';
-import 'package:app_vendor/mangment_products/domain/entities/update_product_entity.dart';
 import 'package:app_vendor/mangment_products/domain/repositories/product_repository.dart';
 
 class ProductRepositoryImpl implements ProductRepository {
@@ -25,8 +23,8 @@ class ProductRepositoryImpl implements ProductRepository {
   }
 
   @override
-  Future<void> updateProduct(UpdateProductEntity product) async {
-    final updateProductModel = UpdateProductModel(
+  Future<void> updateProduct(ProductEntity product) async {
+    final updateProductModel = ProductModel(
       id: product.id,
       name: product.name,
       description: product.description,

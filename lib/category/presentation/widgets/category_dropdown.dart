@@ -1,5 +1,4 @@
 import 'package:app_vendor/category/application/providers/category_notifier_provider.dart';
-import 'package:app_vendor/core/presentation/widgets/wid/colors.dart';
 import 'package:app_vendor/translations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -31,7 +30,7 @@ class CategoryDropdown extends ConsumerWidget {
         labelText: labelText?.i18n,
         prefixIcon: Icon(
           Icons.category_outlined,
-          color: AppColor.kPrimaryColor,
+          // color: AppColor.kPrimaryColor,
         ),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
         contentPadding: const EdgeInsets.symmetric(horizontal: 12),

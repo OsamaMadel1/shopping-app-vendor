@@ -1,5 +1,4 @@
 import 'package:app_vendor/mangment_products/data/models/product_model.dart';
-import 'package:app_vendor/mangment_products/data/models/update_product_model.dart';
 import 'package:app_vendor/mangment_products/data/source/product_remote_data_source.dart';
 import 'package:dio/dio.dart';
 import 'package:image_picker/image_picker.dart';
@@ -91,7 +90,7 @@ class ProductRemoteDataSourceImpl implements ProductRemoteDataSource {
   }
 
   @override
-  Future<void> updateProduct(UpdateProductModel product) async {
+  Future<void> updateProduct(ProductModel product) async {
     FormData formData;
 
     if (product.image is XFile) {

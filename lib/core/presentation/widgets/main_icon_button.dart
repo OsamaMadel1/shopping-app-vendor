@@ -6,29 +6,29 @@ class MainIconButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Container(
       decoration: BoxDecoration(
         boxShadow: [
           BoxShadow(
-            spreadRadius: 3,
-            //color: Theme.of(context).colorScheme.tertiaryContainer,
-            blurRadius: 3,
+            color: colorScheme.shadow.withOpacity(0.2), // ظل خفيف حسب الثيم
+            spreadRadius: 2,
+            blurRadius: 6,
+            offset: Offset(0, 3),
           ),
         ],
         shape: BoxShape.circle,
-        //color: Theme.of(context).colorScheme.surface,
       ),
-      padding: EdgeInsets.all(10),
+      padding: const EdgeInsets.all(10),
       child: FloatingActionButton(
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        shape: CircleBorder(),
+        backgroundColor: colorScheme.primary,
+        foregroundColor: colorScheme.onPrimary,
+        shape: const CircleBorder(),
         onPressed: () {
           context.push('/addProductScreen');
         },
-        child: Icon(
-          Icons.add,
-          //color: Theme.of(context).colorScheme.surface,
-        ),
+        child: const Icon(Icons.add),
       ),
     );
   }

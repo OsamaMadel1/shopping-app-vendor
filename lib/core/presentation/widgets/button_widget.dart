@@ -17,24 +17,30 @@ class ButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final foregroundColor = Theme.of(context).colorScheme.surface;
+
     return SizedBox(
       width: width,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           backgroundColor: Theme.of(context).colorScheme.primary,
-          foregroundColor: Theme.of(context).colorScheme.surface,
+          foregroundColor: foregroundColor,
+          padding: const EdgeInsets.symmetric(vertical: 14),
         ),
         onPressed: isLoading ? null : onTap,
         child: isLoading
-            ? const SizedBox(
+            ? SizedBox(
                 width: 24,
                 height: 24,
                 child: CircularProgressIndicator(
                   strokeWidth: 2.5,
-                  color: Colors.white,
+                  color: foregroundColor,
                 ),
               )
-            : Text(text.i18n, style: TextStyle(fontSize: 16)),
+            : Text(
+                text.i18n,
+                style: TextStyle(fontSize: 16, color: foregroundColor),
+              ),
       ),
     );
   }

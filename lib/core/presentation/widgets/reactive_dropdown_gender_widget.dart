@@ -1,7 +1,6 @@
 import 'package:app_vendor/translations.dart';
 import 'package:flutter/material.dart';
 import 'package:reactive_forms/reactive_forms.dart';
-import 'package:app_vendor/core/presentation/widgets/wid/colors.dart';
 
 class ReactiveDropdownGenderWidget<T> extends StatelessWidget {
   const ReactiveDropdownGenderWidget({
@@ -23,12 +22,22 @@ class ReactiveDropdownGenderWidget<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final inputTheme = theme.inputDecorationTheme;
+
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
       decoration: BoxDecoration(
-        color: Colors.grey[100],
+        color: inputTheme.fillColor ?? theme.cardColor,
         borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: Colors.grey[400]!, width: 1.5),
+        border: Border.all(
+          color: inputTheme.enabledBorder is OutlineInputBorder
+              ? (inputTheme.enabledBorder as OutlineInputBorder)
+                    .borderSide
+                    .color
+              : Colors.grey.shade400,
+          width: 1.5,
+        ),
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -45,18 +54,20 @@ class ReactiveDropdownGenderWidget<T> extends StatelessWidget {
           decoration: InputDecoration(
             border: InputBorder.none,
             hintText: hintText?.i18n,
-            hintStyle: TextStyle(color: AppColor.kPrimaryColor, fontSize: 16),
+            hintStyle:
+                inputTheme.hintStyle ??
+                TextStyle(color: theme.hintColor, fontSize: 16),
             prefixIcon: prefixIcon != null
-                ? Icon(prefixIcon, color: AppColor.kPrimaryColor)
+                ? Icon(prefixIcon, color: theme.iconTheme.color)
                 : null,
           ),
           validationMessages: validationMessages,
           style: TextStyle(
-            color: AppColor.kPrimaryColor,
+            color: theme.textTheme.bodyMedium?.color,
             fontWeight: FontWeight.bold,
             fontSize: 16,
           ),
-          icon: Icon(Icons.arrow_drop_down, color: AppColor.kPrimaryColor),
+          icon: Icon(Icons.arrow_drop_down, color: theme.iconTheme.color),
         ),
       ),
     );

@@ -1,5 +1,4 @@
 import 'package:app_vendor/authentication/application/providers/auth_notifier_provider.dart';
-import 'package:app_vendor/core/presentation/widgets/button_widget.dart';
 import 'package:app_vendor/offfers/application/off_state.dart';
 import 'package:app_vendor/offfers/application/providers/off_notifier_provider.dart';
 import 'package:app_vendor/offfers/presentation/screens/add_off_screen.dart';
@@ -57,7 +56,7 @@ class _OffsScreenState extends ConsumerState<OffsScreen> {
                     final newPrice = off.newPrice;
                     final originalPrice =
                         (newPrice / (1 - (off.discountPercentage / 100)));
-                    print('Offer Image URL: ${off.image}');
+                    // print('Offer Image URL: ${off.image}');
 
                     return GestureDetector(
                       onTap: () {
@@ -111,7 +110,13 @@ class _OffsScreenState extends ConsumerState<OffsScreen> {
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                   const Gap(6),
-
+                                  Text(
+                                    off.description,
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(fontSize: 13),
+                                  ),
+                                  const Gap(10),
                                   // السعر القديم والجديد
                                   Row(
                                     mainAxisAlignment:
@@ -120,9 +125,10 @@ class _OffsScreenState extends ConsumerState<OffsScreen> {
                                       Text(
                                         '${originalPrice.toStringAsFixed(2)}\$',
                                         style: const TextStyle(
+                                          color: Colors.red,
                                           decoration:
                                               TextDecoration.lineThrough,
-                                          color: Colors.red,
+                                          decorationColor: Colors.red,
                                           fontSize: 12,
                                         ),
                                       ),
@@ -137,15 +143,17 @@ class _OffsScreenState extends ConsumerState<OffsScreen> {
                                     ],
                                   ),
 
-                                  const Gap(6),
+                                  const Gap(10),
 
                                   // نهاية العرض
-                                  Text(
-                                    '${'End in'.i18n}: ${DateFormat.yMd().format(off.endDate)}'
-                                        .i18n,
-                                    style: const TextStyle(
-                                      fontSize: 12,
-                                      color: Colors.black54,
+                                  Center(
+                                    child: Text(
+                                      '${'End In'.i18n}: ${DateFormat.yMMMMd().format(off.endDate)}'
+                                          .i18n,
+                                      style: const TextStyle(
+                                        fontSize: 12,
+                                        color: Colors.black54,
+                                      ),
                                     ),
                                   ),
                                 ],
@@ -158,9 +166,9 @@ class _OffsScreenState extends ConsumerState<OffsScreen> {
                   },
                 ),
               ),
-              ButtonWidget(
-                text: 'Add Offer'.i18n,
-                onTap: () async {
+              ElevatedButton(
+                child: Text('Add Offer'.i18n),
+                onPressed: () async {
                   final result = await Navigator.push(
                     context,
                     MaterialPageRoute(

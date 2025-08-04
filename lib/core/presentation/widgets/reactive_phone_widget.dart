@@ -1,4 +1,3 @@
-import 'package:app_vendor/core/presentation/widgets/wid/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:reactive_phone_form_field/reactive_phone_form_field.dart';
 
@@ -8,16 +7,22 @@ class ReactivePhoneWidget extends StatelessWidget {
     required this.controllerName,
     this.suffixIcon,
   });
+
   final String controllerName;
   final IconData? suffixIcon;
+
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return ReactivePhoneFormField(
       formControlName: controllerName,
       decoration: InputDecoration(
-        border: OutlineInputBorder(),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
         hintText: "xxxxxxxxx",
-        suffixIcon: Icon(suffixIcon, color: AppColor.kPrimaryColor),
+        suffixIcon: suffixIcon != null
+            ? Icon(suffixIcon, color: theme.iconTheme.color)
+            : null,
       ),
       isCountryButtonPersistent: true,
       countrySelectorNavigator: CountrySelectorNavigator.dialog(),

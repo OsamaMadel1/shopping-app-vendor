@@ -26,7 +26,7 @@ class OrderDetailsScreen extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  '${'order number'.i18n}: ${order.id.length >= 8 ? order.id.substring(0, 8) : order.id}'
+                  '${'Order Id'.i18n}: ${order.id.length >= 8 ? order.id.substring(0, 8) : order.id}'
                       .i18n,
                   style: const TextStyle(
                     fontSize: 16,
@@ -35,7 +35,7 @@ class OrderDetailsScreen extends ConsumerWidget {
                 ),
                 const Gap(8),
                 Text(
-                  '${'order date'.i18n}: ${DateFormat('yyyy-MM-dd HH:mm').format(order.orderDate)}'
+                  '${'Order Date'.i18n}: ${DateFormat('yyyy-MM-dd HH:mm').format(order.orderDate)}'
                       .i18n,
                 ),
                 const Gap(8),
