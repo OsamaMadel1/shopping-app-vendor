@@ -2,9 +2,11 @@ import 'package:app_vendor/authentication/application/providers/auth_notifier_pr
 import 'package:app_vendor/authentication/data/providers/dio_provider.dart';
 import 'package:app_vendor/core/application/theme_provider.dart';
 import 'package:app_vendor/core/constant/theme.dart';
+import 'package:app_vendor/firebase_options.dart';
 import 'package:app_vendor/roters.dart';
 import 'package:app_vendor/translations.dart';
 import 'package:bot_toast/bot_toast.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -14,6 +16,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   final sharedPrefs = await SharedPreferences.getInstance();
 

@@ -15,8 +15,9 @@ class ProductRemoteDataSourceImpl implements ProductRemoteDataSource {
   ) async {
     final queryParams = <String, dynamic>{};
     if (shopId != null) queryParams['shopId'] = shopId;
-    if (categoryName != null && categoryName.isNotEmpty)
+    if (categoryName != null && categoryName.isNotEmpty) {
       queryParams['category'] = categoryName;
+    }
     final response = await dio.get('Product', queryParameters: queryParams);
 
     if (response.statusCode == 200 && response.data['succeeded'] == true) {

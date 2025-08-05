@@ -128,7 +128,7 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                     crossAxisCount: 2,
                     mainAxisSpacing: 10,
                     crossAxisSpacing: 10,
-                    childAspectRatio: 0.75,
+                    childAspectRatio: 0.6,
                   ),
                   itemBuilder: (context, index) {
                     final product = products[index];
@@ -298,51 +298,54 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
   Widget _buildProductCard(product, String heroTag) {
     return LocalHero(
       tag: heroTag,
-      child: SizedBox(
-        height: 320,
-        // _isGrid ? 320 : 180, // زيادة الارتفاع لاستيعاب البوتوم بار
-        child: InkWell(
-          borderRadius: BorderRadius.circular(15),
-          onTap: () {
-            context.pushNamed(
-              'productDetailsScreen',
-              pathParameters: {'id': product.id!},
-            );
-          },
-          child: Card(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(15),
-            ),
-            elevation: 4,
-            // color: Colors.white,
-            // shadowColor: Colors.grey.shade300,
-            child: Column(
-              children: [
-                // المحتوى الحالي سواء Grid أو List:
-                Expanded(
-                  child:
-                      // _isGrid?
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Expanded(
-                            child: ClipRRect(
-                              borderRadius: const BorderRadius.vertical(
-                                top: Radius.circular(15),
-                              ),
-                              child: Image.network(
-                                product.image,
-                                fit: BoxFit.cover,
-                                errorBuilder: (_, __, ___) =>
-                                    const Icon(Icons.image_not_supported),
-                              ),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(15),
+        onTap: () {
+          context.pushNamed(
+            'productDetailsScreen',
+            pathParameters: {'id': product.id!},
+          );
+        },
+        child: Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
+          ),
+          elevation: 4,
+          // color: Colors.white,
+          // shadowColor: Colors.grey.shade300,
+          child: Column(
+            children: [
+              // المحتوى الحالي سواء Grid أو List:
+              Expanded(
+                child:
+                    // _isGrid?
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Expanded(
+                          flex: 5,
+                          child: ClipRRect(
+                            borderRadius: const BorderRadius.vertical(
+                              top: Radius.circular(15),
+                            ),
+                            child: Image.network(
+                              product.image,
+                              fit: BoxFit.cover,
+                              errorBuilder: (_, __, ___) =>
+                                  const Icon(Icons.image_not_supported),
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
+                        ),
+                        Expanded(
+                          flex: 4,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8.0,
+                            ),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+                                const SizedBox(height: 8),
                                 Text(
                                   product.name,
                                   style: const TextStyle(
@@ -373,121 +376,115 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                               ],
                             ),
                           ),
-                        ],
-                      ),
-
-                  // : Row(
-                  //     children: [
-                  //       ClipRRect(
-                  //         borderRadius: const BorderRadius.horizontal(
-                  //           left: Radius.circular(15),
-                  //         ),
-                  //         child: Image.network(
-                  //           product.image,
-                  //           height: double.infinity,
-                  //           width: 120,
-                  //           fit: BoxFit.cover,
-                  //           errorBuilder: (_, __, ___) =>
-                  //               const Icon(Icons.image_not_supported),
-                  //         ),
-                  //       ),
-                  //       const Gap(12),
-                  //       Expanded(
-                  //         child: Padding(
-                  //           padding: const EdgeInsets.symmetric(
-                  //             vertical: 12.0,
-                  //             horizontal: 8,
-                  //           ),
-                  //           child: Column(
-                  //             crossAxisAlignment: CrossAxisAlignment.start,
-                  //             mainAxisAlignment: MainAxisAlignment.center,
-                  //             children: [
-                  //               Text(
-                  //                 product.name,
-                  //                 style: const TextStyle(
-                  //                   fontWeight: FontWeight.bold,
-                  //                   fontSize: 16,
-                  //                 ),
-                  //                 maxLines: 1,
-                  //                 overflow: TextOverflow.ellipsis,
-                  //               ),
-                  //               const SizedBox(height: 4),
-                  //               Text(
-                  //                 product.description ?? '',
-                  //                 maxLines: 2,
-                  //                 overflow: TextOverflow.ellipsis,
-                  //                 style: const TextStyle(
-                  //                   fontSize: 13,
-                  //                   color: Colors.black54,
-                  //                 ),
-                  //               ),
-                  //               const SizedBox(height: 6),
-                  //               Text(
-                  //                 'price: ${product.price}${product.currency}',
-                  //                 style: const TextStyle(
-                  //                   color: Colors.teal,
-                  //                   fontWeight: FontWeight.bold,
-                  //                 ),
-                  //               ),
-                  //             ],
-                  //           ),
-                  //         ),
-                  //       ),
-                  //     ],
-                  //   ),
-                ),
-
-                // شريط الأزرار في الأسفل
-                Container(
-                  decoration: BoxDecoration(
-                    border: Border(
-                      top: BorderSide(color: Colors.grey.shade300),
-                    ),
-                    borderRadius: BorderRadius.vertical(
-                      bottom: Radius.circular(15),
-                    ),
-                    // color: Colors.grey.shade100,
-                  ),
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
-                  height: 40,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      // زر التعليقات
-                      Expanded(
-                        child: TextButton.icon(
-                          onPressed: () {
-                            // التنقل إلى صفحة التعليقات وتمرير id المنتج
-
-                            context.pushNamed(
-                              'commentsScreen',
-                              pathParameters: {'productId': product.id!},
-                            );
-                            // print('product id: ${product.id}');
-                          },
-                          icon: const Icon(Icons.comment, size: 18),
-                          label: const Text(''),
                         ),
-                      ),
+                      ],
+                    ),
 
-                      // زر اللايك (مثال فقط، يمكنك تعديل المنطق حسب الحاجة)
-                      Expanded(
-                        child: TextButton.icon(
-                          onPressed: () {
-                            // هنا يمكنك إضافة منطق اللايك، مثل تحديث حالة اللايك
-                            // ScaffoldMessenger.of(
-                            //   context,
-                            // ).showSnackBar(SnackBar(content: Text('Liked!')));
-                          },
-                          icon: const Icon(Icons.thumb_up, size: 18),
-                          label: const Text(''),
-                        ),
-                      ),
-                    ],
+                // : Row(
+                //     children: [
+                //       ClipRRect(
+                //         borderRadius: const BorderRadius.horizontal(
+                //           left: Radius.circular(15),
+                //         ),
+                //         child: Image.network(
+                //           product.image,
+                //           height: double.infinity,
+                //           width: 120,
+                //           fit: BoxFit.cover,
+                //           errorBuilder: (_, __, ___) =>
+                //               const Icon(Icons.image_not_supported),
+                //         ),
+                //       ),
+                //       const Gap(12),
+                //       Expanded(
+                //         child: Padding(
+                //           padding: const EdgeInsets.symmetric(
+                //             vertical: 12.0,
+                //             horizontal: 8,
+                //           ),
+                //           child: Column(
+                //             crossAxisAlignment: CrossAxisAlignment.start,
+                //             mainAxisAlignment: MainAxisAlignment.center,
+                //             children: [
+                //               Text(
+                //                 product.name,
+                //                 style: const TextStyle(
+                //                   fontWeight: FontWeight.bold,
+                //                   fontSize: 16,
+                //                 ),
+                //                 maxLines: 1,
+                //                 overflow: TextOverflow.ellipsis,
+                //               ),
+                //               const SizedBox(height: 4),
+                //               Text(
+                //                 product.description ?? '',
+                //                 maxLines: 2,
+                //                 overflow: TextOverflow.ellipsis,
+                //                 style: const TextStyle(
+                //                   fontSize: 13,
+                //                   color: Colors.black54,
+                //                 ),
+                //               ),
+                //               const SizedBox(height: 6),
+                //               Text(
+                //                 'price: ${product.price}${product.currency}',
+                //                 style: const TextStyle(
+                //                   color: Colors.teal,
+                //                   fontWeight: FontWeight.bold,
+                //                 ),
+                //               ),
+                //             ],
+                //           ),
+                //         ),
+                //       ),
+                //     ],
+                //   ),
+              ),
+
+              // شريط الأزرار في الأسفل
+              Container(
+                decoration: BoxDecoration(
+                  border: Border(top: BorderSide(color: Colors.grey.shade300)),
+                  borderRadius: BorderRadius.vertical(
+                    bottom: Radius.circular(15),
                   ),
+                  // color: Colors.grey.shade100,
                 ),
-              ],
-            ),
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                height: 40,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    // زر التعليقات
+                    TextButton.icon(
+                      onPressed: () {
+                        // التنقل إلى صفحة التعليقات وتمرير id المنتج
+
+                        context.pushNamed(
+                          'commentsScreen',
+                          pathParameters: {'productId': product.id!},
+                        );
+                        // print('product id: ${product.id}');
+                      },
+                      icon: const Icon(Icons.comment, size: 18),
+                      label: const Text(''),
+                    ),
+
+                    // زر اللايك (مثال فقط، يمكنك تعديل المنطق حسب الحاجة)
+                    TextButton.icon(
+                      onPressed: () {
+                        // هنا يمكنك إضافة منطق اللايك، مثل تحديث حالة اللايك
+                        // ScaffoldMessenger.of(
+                        //   context,
+                        // ).showSnackBar(SnackBar(content: Text('Liked!')));
+                      },
+                      icon: const Icon(Icons.thumb_up, size: 18),
+                      label: const Text(''),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
         ),
       ),

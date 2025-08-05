@@ -23,7 +23,6 @@ class _OffsScreenState extends ConsumerState<OffsScreen> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final shopId = ref.read(authNotifierProvider).shopId;
-      // هنا ضع معرف المتجر الحقيقي بدل "yourShopId"
       ref.read(offNotifierProvider.notifier).loadOffs(shopId!);
     });
   }
@@ -48,7 +47,7 @@ class _OffsScreenState extends ConsumerState<OffsScreen> {
                     crossAxisCount: 2, // عدد الأعمدة
                     crossAxisSpacing: 8,
                     mainAxisSpacing: 8,
-                    childAspectRatio: 0.7, // لتحديد شكل الكارد
+                    childAspectRatio: 0.6, // لتحديد شكل الكارد
                   ),
                   itemBuilder: (context, index) {
                     final off = offers[index];
@@ -84,7 +83,7 @@ class _OffsScreenState extends ConsumerState<OffsScreen> {
                               child: off.image != null && off.image!.isNotEmpty
                                   ? Image.network(
                                       off.image!,
-                                      height: 120,
+
                                       width: double.infinity,
                                       fit: BoxFit.cover,
                                     )

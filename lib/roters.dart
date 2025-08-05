@@ -1,5 +1,4 @@
 //import 'package:app/category/presentation/screens/categories_screen.dart';
-
 //import 'package:app/core/presentation/screens/welcome_screen.dart';
 import 'package:app_vendor/authentication/application/auth_state.dart';
 import 'package:app_vendor/authentication/application/providers/auth_notifier_provider.dart';
@@ -17,9 +16,13 @@ import 'package:app_vendor/mangment_products/presentation/screens/product_screen
 import 'package:app_vendor/offfers/presentation/screens/offs_screen.dart';
 // import 'package:app_vendor/offer/domain/entity/offer_entity.dart';
 // import 'package:app_vendor/offer/presentation/screens/offer_screen.dart';
-
 import 'package:app_vendor/orders/presentation/screens/order_details_screen.dart';
 import 'package:app_vendor/orders/presentation/screens/orders_screen.dart';
+// import 'package:app_vendor/products/domain/entities/prod_entity.dart';
+// import 'package:app_vendor/products/presentation/screens/add_prod_screen.dart';
+// import 'package:app_vendor/products/presentation/screens/edit_prod_screen.dart';
+// import 'package:app_vendor/products/presentation/screens/prod_details_screen.dart';
+// import 'package:app_vendor/products/presentation/screens/prod_screen.dart';
 import 'package:app_vendor/settings/presentation/screens/settings_screen.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -99,9 +102,9 @@ final router = Provider<GoRouter>((ref) {
         name: "homeScreen",
         builder: (context, state) => HomeScreen(),
       ),
-      // =================================
-      // ======== product ================
-      // =================================
+      // // =================================
+      // // ======== product ================
+      // // =================================
       GoRoute(
         path: "/productScreen",
         name: "productScreen",
@@ -129,6 +132,37 @@ final router = Provider<GoRouter>((ref) {
           return EditProductScreen(product: product);
         },
       ),
+      // ------------------------------------
+      // =================================
+      // ======== product ================
+      // =================================
+      // GoRoute(
+      //   path: "/productScreen",
+      //   name: "productScreen",
+      //   builder: (context, state) => ProdScreen(),
+      // ),
+      // GoRoute(
+      //   path: "/addProductScreen",
+      //   name: "addProductScreen",
+      //   builder: (context, state) => AddProdScreen(),
+      // ),
+
+      // GoRoute(
+      //   path: '/productDetailsScreen/:id',
+      //   name: "productDetailsScreen",
+      //   builder: (context, state) {
+      //     final id = state.pathParameters['id']!;
+      //     return ProdDetailsScreen(id: id);
+      //   },
+      // ),
+      // GoRoute(
+      //   path: '/editProduct',
+      //   name: 'editProductScreen',
+      //   builder: (context, state) {
+      //     final prod = state.extra as ProdEntity;
+      //     return EditProdScreen(prod: prod);
+      //   },
+      // ),
       // ------------------------------------
 
       // =================================
