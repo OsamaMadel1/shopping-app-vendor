@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:reactive_phone_form_field/reactive_phone_form_field.dart';
 
-final signUpFormProvider = Provider((ref) {
+final signUpFormProvider = Provider.autoDispose((ref) {
   return FormGroup(
     {
       "firstName": FormControl<String>(validators: [Validators.required]),

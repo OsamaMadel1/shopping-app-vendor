@@ -1,5 +1,5 @@
 import 'package:app_vendor/authentication/application/providers/auth_notifier_provider.dart';
-import 'package:app_vendor/authentication/data/providers/dio_provider.dart';
+import 'package:app_vendor/authentication/application/providers/dio_provider.dart';
 import 'package:app_vendor/core/application/theme_provider.dart';
 import 'package:app_vendor/core/constant/theme.dart';
 import 'package:app_vendor/firebase_options.dart';

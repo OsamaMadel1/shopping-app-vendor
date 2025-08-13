@@ -36,6 +36,7 @@ class AddressInfoStep extends StatelessWidget {
                 hint: "Floor".i18n,
                 controllerName: "floor",
                 prefixIcon: Icons.apartment,
+                keyboardType: TextInputType.number,
               ),
             ),
             Expanded(

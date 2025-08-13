@@ -16,7 +16,7 @@ OffModel _$OffModelFromJson(Map<String, dynamic> json) => OffModel(
   newPrice: (json['newPrice'] as num).toDouble(),
   startDate: DateTime.parse(json['startDate'] as String),
   endDate: DateTime.parse(json['endDate'] as String),
-  image: json['imageUrl'] as String?,
+  image: json['image'] as String?,
 );
 
 Map<String, dynamic> _$OffModelToJson(OffModel instance) => <String, dynamic>{

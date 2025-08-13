@@ -24,7 +24,7 @@ class SettingsScreen extends ConsumerWidget {
           children: [
             SettingsCardWidget(
               onTap: () {
-                context.push('profileScreen');
+                context.push('/profileScreen');
               },
               icon: const Icon(Icons.person_pin_outlined),
               title: "Profile".i18n,

@@ -18,6 +18,7 @@ import 'package:app_vendor/offfers/presentation/screens/offs_screen.dart';
 // import 'package:app_vendor/offer/presentation/screens/offer_screen.dart';
 import 'package:app_vendor/orders/presentation/screens/order_details_screen.dart';
 import 'package:app_vendor/orders/presentation/screens/orders_screen.dart';
+import 'package:app_vendor/settings/presentation/screens/profile_screen.dart';
 // import 'package:app_vendor/products/domain/entities/prod_entity.dart';
 // import 'package:app_vendor/products/presentation/screens/add_prod_screen.dart';
 // import 'package:app_vendor/products/presentation/screens/edit_prod_screen.dart';
@@ -101,6 +102,11 @@ final router = Provider<GoRouter>((ref) {
         path: "/homeScreen",
         name: "homeScreen",
         builder: (context, state) => HomeScreen(),
+      ),
+      GoRoute(
+        path: "/profileScreen",
+        name: "profileScreen",
+        builder: (context, state) => ProfileScreen(),
       ),
       // // =================================
       // // ======== product ================

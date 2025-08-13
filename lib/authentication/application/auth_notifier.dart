@@ -1,15 +1,15 @@
 import 'package:app_vendor/authentication/application/auth_state.dart';
 import 'package:app_vendor/authentication/domain/entities/user_login_entity.dart';
 import 'package:app_vendor/authentication/domain/entities/user_register_entity.dart';
-import 'package:app_vendor/authentication/domain/usecase/clear_token_usecase.dart';
-import 'package:app_vendor/authentication/domain/usecase/get_shop_id_use_case.dart';
-import 'package:app_vendor/authentication/domain/usecase/get_token_usecase.dart';
-import 'package:app_vendor/authentication/domain/usecase/get_user_name_use_case.dart';
-import 'package:app_vendor/authentication/domain/usecase/login_user_usecase.dart';
-import 'package:app_vendor/authentication/domain/usecase/register_user_usecase.dart';
-import 'package:app_vendor/authentication/domain/usecase/save_shop_id_use_case.dart';
-import 'package:app_vendor/authentication/domain/usecase/save_token_usecase.dart';
-import 'package:app_vendor/authentication/domain/usecase/save_user_name_use_case.dart';
+import 'package:app_vendor/authentication/domain/usecases/clear_token_usecase.dart';
+import 'package:app_vendor/authentication/domain/usecases/get_shop_id_use_case.dart';
+import 'package:app_vendor/authentication/domain/usecases/get_token_usecase.dart';
+import 'package:app_vendor/authentication/domain/usecases/get_user_name_use_case.dart';
+import 'package:app_vendor/authentication/domain/usecases/login_user_usecase.dart';
+import 'package:app_vendor/authentication/domain/usecases/register_user_usecase.dart';
+import 'package:app_vendor/authentication/domain/usecases/save_shop_id_use_case.dart';
+import 'package:app_vendor/authentication/domain/usecases/save_token_usecase.dart';
+import 'package:app_vendor/authentication/domain/usecases/save_user_name_use_case.dart';
 import 'package:app_vendor/utils/error_handler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -60,6 +60,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
     print('🟡 [Login] بدأ تنفيذ تسجيل الدخول...');
     try {
       state = state.copyWith(status: AuthStatus.loading, error: null);
+
       final response = await loginUser(user);
       print('✅ [Login] تسجيل الدخول ناجح. Token: ${response.token}');
       await saveToken(response.token);
@@ -86,15 +87,6 @@ class AuthNotifier extends StateNotifier<AuthState> {
 
   Future<void> checkAuthStatus() async {
     print('🔄 [Auth Check] التحقق من وجود توكن مخزن...');
-    // final token = await getToken();
-    // if (token != null) {
-    //   state = state.copyWith(
-    //     status: AuthStatus.authenticated,
-    //     token: token,
-    //   );
-    // } else {
-    //   state = state.copyWith(status: AuthStatus.unauthenticated);
-    // }
     try {
       final token = await getToken();
       if (token != null) {

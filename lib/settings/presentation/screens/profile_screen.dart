@@ -1,228 +1,347 @@
-// import 'package:flutter/material.dart';
+import 'package:app_vendor/authentication/application/providers/auth_notifier_provider.dart';
+import 'package:app_vendor/core/presentation/widgets/reactive_text_input_widget.dart';
+import 'package:app_vendor/shop/applications/providers/shop_providers.dart';
+import 'package:app_vendor/shop/applications/shop_state.dart';
+import 'package:app_vendor/shop/domain/entities/shop_address_entity.dart';
+import 'package:app_vendor/shop/domain/entities/shop_email_entity.dart';
+import 'package:app_vendor/shop/domain/entities/shop_entity.dart';
+import 'package:app_vendor/translations.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:reactive_forms/reactive_forms.dart';
 
-// void main() {
-//   runApp(MyApp());
-// }
+class ProfileScreen extends ConsumerStatefulWidget {
+  const ProfileScreen({super.key});
 
-// class MyApp extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       title: 'تعديل الملف الشخصي',
-//       theme: ThemeData(
-//         primarySwatch: Colors.blue,
-//         fontFamily: 'Tajawal', // يمكن استخدام خط عربي مثل Tajawal
-//       ),
-//       home: ProfileEditPage(),
-//     );
-//   }
-// }
+  @override
+  ConsumerState<ProfileScreen> createState() => _ProfileScreenState();
+}
 
-// class ProfileEditPage extends StatefulWidget {
-//   @override
-//   _ProfileEditPageState createState() => _ProfileEditPageState();
-// }
+class _ProfileScreenState extends ConsumerState<ProfileScreen> {
+  bool _didFillForm = false;
 
-// class _ProfileEditPageState extends State<ProfileEditPage> {
-//   final _formKey = GlobalKey<FormState>();
-//   TextEditingController _firstNameController =
-//       TextEditingController(text: "osama");
-//   TextEditingController _lastNameController =
-//       TextEditingController(text: "customer");
-//   TextEditingController _emailController =
-//       TextEditingController(text: "oussamamadel3@gmail.com");
-//   TextEditingController _mobileController =
-//       TextEditingController(text: "55555555555");
-//   TextEditingController _cityController = TextEditingController(text: "a");
-//   TextEditingController _streetController = TextEditingController(text: "a");
-//   TextEditingController _floorController = TextEditingController(text: "4");
-//   DateTime? _birthDate;
+  final form = FormGroup({
+    'shopFirstName': FormControl<String>(validators: [Validators.required]),
+    'shopLastName': FormControl<String>(validators: [Validators.required]),
+    'shopPhone': FormControl<String>(validators: [Validators.required]),
+    'shopEmail': FormControl<String>(
+      validators: [Validators.required, Validators.email],
+    ),
+    'city': FormControl<String>(validators: [Validators.required]),
+    'street': FormControl<String>(validators: [Validators.required]),
+    'floor': FormControl<String>(validators: [Validators.required]),
+    'apartment': FormControl<String>(validators: [Validators.required]),
+  });
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text("تعديل الملف الشخصي"),
-//         centerTitle: true,
-//         elevation: 0,
-//       ),
-//       body: SingleChildScrollView(
-//         padding: EdgeInsets.all(16),
-//         child: Form(
-//           key: _formKey,
-//           child: Column(
-//             crossAxisAlignment: CrossAxisAlignment.start,
-//             children: [
-//               // معلومات المستخدم
-//               Center(
-//                 child: Column(
-//                   children: [
-//                     CircleAvatar(
-//                       radius: 40,
-//                       backgroundColor: Colors.blue.shade100,
-//                       child: Icon(Icons.person, size: 40, color: Colors.blue),
-//                     ),
-//                     SizedBox(height: 8),
-//                     Text(
-//                       "oussamamadel3@gmail.com",
-//                       style: TextStyle(color: Colors.grey),
-//                     ),
-//                   ],
-//                 ),
-//               ),
-//               SizedBox(height: 24),
+  @override
+  void initState() {
+    super.initState();
+    final shopId = ref.read(authNotifierProvider).shopId;
+    if (shopId != null) {
+      Future.microtask(
+        () => ref.read(shopNotifierProvider.notifier).fetchShopById(shopId),
+      );
+    }
+  }
 
-//               // المعلومات الشخصية
-//               Text("المعلومات الشخصية",
-//                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-//               SizedBox(height: 16),
-//               _buildTextField(
-//                   _firstNameController, "الاسم الأول", TextInputType.name),
-//               SizedBox(height: 12),
-//               _buildTextField(
-//                   _lastNameController, "الاسم الأخير", TextInputType.name),
-//               SizedBox(height: 12),
-//               _buildTextField(
-//                   _mobileController, "رقم الجوال", TextInputType.phone),
-//               SizedBox(height: 12),
-//               GestureDetector(
-//                 onTap: () => _selectBirthDate(context),
-//                 child: AbsorbPointer(
-//                   child: TextFormField(
-//                     decoration: InputDecoration(
-//                       labelText: "تاريخ الميلاد",
-//                       border: OutlineInputBorder(),
-//                       suffixIcon: Icon(Icons.calendar_today),
-//                     ),
-//                     controller: TextEditingController(
-//                         text: _birthDate != null
-//                             ? "${_birthDate!.day}/${_birthDate!.month}/${_birthDate!.year}"
-//                             : ""),
-//                   ),
-//                 ),
-//               ),
-//               SizedBox(height: 24),
+  void _fillFormWithShopData(ShopEntity shop) {
+    form.control('shopFirstName').value = shop.firstName;
+    form.control('shopLastName').value = shop.lastName;
+    form.control('shopPhone').value = shop.phone;
+    form.control('shopEmail').value = shop.email.userName;
+    form.control('city').value = shop.address.city;
+    form.control('floor').value = shop.address.floor;
+    form.control('street').value = shop.address.street;
+    form.control('apartment').value = shop.address.apartment;
+  }
 
-//               // العنوان
-//               Text("العنوان",
-//                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-//               SizedBox(height: 16),
-//               _buildTextField(_cityController, "المدينة", TextInputType.text),
-//               SizedBox(height: 12),
-//               _buildTextField(_streetController, "الشارع", TextInputType.text),
-//               SizedBox(height: 12),
-//               _buildTextField(_floorController, "الطابق", TextInputType.text),
-//               SizedBox(height: 32),
+  void _onSubmit(String shopId) {
+    if (!form.valid) {
+      form.markAllAsTouched();
+      return;
+    }
 
-//               Row(
-//                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                 children: [
-//                   // زر حذف الحساب
-//                   ElevatedButton(
-//                     style: ElevatedButton.styleFrom(
-//                       backgroundColor: Colors.red[700],
-//                       padding:
-//                           EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-//                       shape: RoundedRectangleBorder(
-//                         borderRadius: BorderRadius.circular(8),
-//                       ),
-//                     ),
-//                     onPressed: _showDeleteConfirmation,
-//                     child: Text(
-//                       "حذف الحساب",
-//                       style: TextStyle(
-//                         color: Colors.white,
-//                         fontSize: 16,
-//                         fontWeight: FontWeight.bold,
-//                       ),
-//                     ),
-//                   ),
+    final updatedShop = ShopEntity(
+      id: shopId,
+      firstName: form.control('shopFirstName').value,
+      lastName: form.control('shopLastName').value,
+      phone: form.control('shopPhone').value,
+      shopState: ShopStatus.open,
+      email: ShopEmailEntity(
+        userName: form.control('shopEmail').value,
+        password: '',
+      ),
+      address: ShopAddressEntity(
+        city: form.control('city').value,
+        street: form.control('street').value,
+        floor: form.control('floor').value,
+        apartment: form.control('apartment').value,
+      ),
+    );
 
-//                   // زر حفظ التغييرات
-//                   ElevatedButton(
-//                     style: ElevatedButton.styleFrom(
-//                       backgroundColor: Colors.blue[700],
-//                       padding:
-//                           EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-//                       shape: RoundedRectangleBorder(
-//                         borderRadius: BorderRadius.circular(8),
-//                       ),
-//                     ),
-//                     onPressed: _saveChanges,
-//                     child: Text(
-//                       "حفظ التغييرات",
-//                       style: TextStyle(
-//                         color: Colors.white,
-//                         fontSize: 16,
-//                         fontWeight: FontWeight.bold,
-//                       ),
-//                     ),
-//                   ),
-//                 ],
-//               ),
-//             ],
-//           ),
-//         ),
-//       ),
-//     );
-//   }
+    ref.read(shopNotifierProvider.notifier).updateShop(updatedShop);
+  }
 
-//   Widget _buildTextField(
-//       TextEditingController controller, String label, TextInputType inputType) {
-//     return TextFormField(
-//       controller: controller,
-//       decoration: InputDecoration(
-//         labelText: label,
-//         border: OutlineInputBorder(),
-//       ),
-//       keyboardType: inputType,
-//     );
-//   }
+  void _onDelete(String shopId) async {
+    final confirm = await showDialog<bool>(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: Text('Confirm Delete Account'.i18n),
+        content: Text('Are you sure you want to delete this account?'.i18n),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: Text('Cancel'.i18n),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            child: Text('Delete'.i18n),
+          ),
+        ],
+      ),
+    );
 
-//   Future<void> _selectBirthDate(BuildContext context) async {
-//     final DateTime? picked = await showDatePicker(
-//       context: context,
-//       initialDate: DateTime.now(),
-//       firstDate: DateTime(1900),
-//       lastDate: DateTime.now(),
-//     );
-//     if (picked != null && picked != _birthDate) {
-//       setState(() {
-//         _birthDate = picked;
-//       });
-//     }
-//   }
+    if (confirm != true || !mounted) return;
 
-//   void _saveChanges() {
-//     if (_formKey.currentState!.validate()) {
-//       // حفظ التغييرات هنا
-//       ScaffoldMessenger.of(context).showSnackBar(
-//         SnackBar(content: Text("تم حفظ التغييرات بنجاح")),
-//       );
-//     }
-//   }
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) => const Center(child: CircularProgressIndicator()),
+    );
 
-//   void _showDeleteConfirmation() {
-//     showDialog(
-//       context: context,
-//       builder: (context) => AlertDialog(
-//         title: Text("تأكيد الحذف"),
-//         content: Text(
-//             "هل أنت متأكد من رغبتك في حذف الحساب؟ لا يمكن التراجع عن هذه العملية."),
-//         actions: [
-//           TextButton(
-//             onPressed: () => Navigator.pop(context),
-//             child: Text("إلغاء"),
-//           ),
-//           TextButton(
-//             onPressed: () {
-//               Navigator.pop(context);
-//               // حذف الحساب هنا
-//             },
-//             child: Text("حذف", style: TextStyle(color: Colors.red)),
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }
+    final success = await ref
+        .read(shopNotifierProvider.notifier)
+        .deleteShop(shopId);
+
+    if (mounted) Navigator.of(context).pop();
+
+    if (!success) {
+      final errMsg = ref
+          .read(shopNotifierProvider)
+          .maybeWhen(
+            error: (message) => message,
+            orElse: () =>
+                'Failed to delete account. Please try again later.'.i18n,
+          );
+      if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(errMsg)));
+      }
+      return;
+    }
+
+    await ref.read(authNotifierProvider.notifier).logout();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final shopState = ref.watch(shopNotifierProvider);
+    shopState.maybeWhen(
+      singleLoaded: (shop) {
+        if (!_didFillForm) {
+          _fillFormWithShopData(shop);
+          _didFillForm = true;
+        }
+      },
+      orElse: () {},
+    );
+
+    final shopId = ref.read(authNotifierProvider).shopId;
+
+    return Scaffold(
+      appBar: AppBar(title: Text('Edit Shop Profile'.i18n)),
+      body: shopState.maybeWhen(
+        loading: () => const Center(child: CircularProgressIndicator()),
+        singleLoaded: (_) => ReactiveForm(
+          formGroup: form,
+          child: ListView(
+            padding: const EdgeInsets.all(16),
+            children: [
+              // Personal Info Card
+              Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                elevation: 4,
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Center(
+                        child: Text(
+                          'Personal Information'.i18n,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('First Name'.i18n),
+                                const SizedBox(height: 5),
+                                ReactiveTextInputWidget(
+                                  controllerName: 'shopFirstName',
+                                  prefixIcon: Icons.person,
+                                  hint: '',
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(width: 16),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('Last Name'.i18n),
+                                const SizedBox(height: 5),
+                                ReactiveTextInputWidget(
+                                  controllerName: 'shopLastName',
+                                  prefixIcon: Icons.person,
+                                  hint: '',
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 16),
+                      Text('Phone Number'.i18n),
+                      const SizedBox(height: 5),
+                      ReactiveTextInputWidget(
+                        prefixIcon: Icons.phone,
+                        controllerName: 'shopPhone',
+                        hint: '',
+                        keyboardType: TextInputType.phone,
+                      ),
+                      const SizedBox(height: 16),
+                      Text('Email'.i18n),
+                      const SizedBox(height: 5),
+                      ReactiveTextInputWidget(
+                        prefixIcon: Icons.email,
+                        controllerName: 'shopEmail',
+                        hint: '',
+                        keyboardType: TextInputType.emailAddress,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 24),
+
+              // Address Card
+              Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                elevation: 4,
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Center(
+                        child: Text(
+                          'Address Information'.i18n,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('City'.i18n),
+                                const SizedBox(height: 5),
+                                ReactiveTextInputWidget(
+                                  controllerName: 'city',
+                                  hint: '',
+                                  prefixIcon: Icons.location_city_outlined,
+                                ),
+                                const SizedBox(height: 16),
+                                Text('Floor'.i18n),
+                                const SizedBox(height: 5),
+                                ReactiveTextInputWidget(
+                                  controllerName: 'floor',
+                                  hint: '',
+                                  prefixIcon: Icons.apartment,
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(width: 16),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('Street'.i18n),
+                                const SizedBox(height: 5),
+                                ReactiveTextInputWidget(
+                                  controllerName: 'street',
+                                  prefixIcon: Icons.streetview,
+                                  hint: '',
+                                ),
+                                const SizedBox(height: 16),
+                                Text('Apartment'.i18n),
+                                const SizedBox(height: 5),
+                                ReactiveTextInputWidget(
+                                  controllerName: 'apartment',
+                                  prefixIcon: Icons.home,
+                                  hint: '',
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 32),
+
+              // Buttons
+              ElevatedButton(
+                child: Text('Save Changes'.i18n),
+                onPressed: () {
+                  if (shopId != null) {
+                    _onSubmit(shopId);
+                  }
+                },
+              ),
+              const SizedBox(height: 12),
+              TextButton(
+                onPressed: () {
+                  if (shopId != null) {
+                    _onDelete(shopId);
+                  }
+                },
+                style: TextButton.styleFrom(
+                  backgroundColor: Colors.red,
+                  foregroundColor: Colors.white,
+                ),
+                child: Text('Delete Account'.i18n),
+              ),
+            ],
+          ),
+        ),
+        error: (message) => Center(child: Text(message)),
+        orElse: () => Center(child: Text('Loading data...'.i18n)),
+      ),
+    );
+  }
+}

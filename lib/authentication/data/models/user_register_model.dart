@@ -18,6 +18,28 @@ class UserRegisterModel {
     required this.address,
   });
 
+  factory UserRegisterModel.fromJson(Map<String, dynamic> json) {
+    return UserRegisterModel(
+      firstName: json['firstName'],
+      lastName: json['lastName'],
+      email: json['email'],
+      phone: json['phone'],
+      password: json['password'],
+      address: AddressModel.fromJson(json['address']),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'firstName': firstName,
+      'lastName': lastName,
+      'email': email,
+      'phone': phone,
+      'password': password,
+      'address': address.toJson(),
+    };
+  }
+
   factory UserRegisterModel.fromEntity(UserRegisterEntity entity) {
     return UserRegisterModel(
       firstName: entity.firstName,
@@ -28,13 +50,4 @@ class UserRegisterModel {
       address: AddressModel.fromEntity(entity.address),
     );
   }
-
-  Map<String, dynamic> toJson() => {
-    'firstName': firstName,
-    'lastName': lastName,
-    'email': email,
-    'phone': phone,
-    'password': password,
-    'address': address.toJson(),
-  };
 }

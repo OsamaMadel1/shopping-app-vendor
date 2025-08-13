@@ -4,12 +4,13 @@ import 'package:app_vendor/authentication/application/auth_state.dart';
 import 'package:app_vendor/authentication/application/providers/auth_notifier_provider.dart';
 import 'package:app_vendor/authentication/application/providers/log_in_form_provider.dart';
 import 'package:app_vendor/authentication/domain/entities/user_login_entity.dart';
-import 'package:app_vendor/core/presentation/widgets/button_widget.dart';
+// import 'package:app_vendor/core/presentation/widgets/button_widget.dart';
 import 'package:app_vendor/core/presentation/widgets/reactive_password_input_widget.dart';
 import 'package:app_vendor/core/presentation/widgets/reactive_text_input_widget.dart';
 import 'package:app_vendor/core/presentation/widgets/text_button_widget.dart';
 import 'package:app_vendor/core/presentation/widgets/text_widget.dart';
 import 'package:app_vendor/translations.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -22,7 +23,7 @@ class LoginScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ref) {
     final form = ref.watch(logInFormProvider);
-    final authState = ref.watch(authNotifierProvider);
+    // final authState = ref.watch(authNotifierProvider);
     final authNotifier = ref.read(authNotifierProvider.notifier);
     final theme = Theme.of(context);
     final size = MediaQuery.of(context).size;
@@ -154,10 +155,18 @@ class LoginScreen extends ConsumerWidget {
                                                 as String?)
                                             ?.trim() ??
                                         '';
+
+                                    // ⬅️ جلب الـ device token
+                                    String? deviceToken =
+                                        await FirebaseMessaging.instance
+                                            .getToken();
+                                    print("📱 Device Token: $deviceToken");
+
                                     await authNotifier.login(
                                       UserLoginEntity(
                                         email: email,
                                         password: password,
+                                        deviceToken: deviceToken,
                                       ),
                                     );
                                   },

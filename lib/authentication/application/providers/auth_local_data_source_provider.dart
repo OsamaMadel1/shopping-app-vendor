@@ -1,4 +1,4 @@
-import 'package:app_vendor/authentication/data/providers/dio_provider.dart';
+import 'package:app_vendor/authentication/application/providers/dio_provider.dart';
 import 'package:app_vendor/authentication/data/source/local/auth_local_data_source.dart';
 import 'package:app_vendor/authentication/data/source/local/auth_local_data_source_imp.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

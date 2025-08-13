@@ -1,4 +1,4 @@
-import 'package:app_vendor/authentication/data/providers/dio_provider.dart';
+import 'package:app_vendor/authentication/application/providers/dio_provider.dart';
 import 'package:app_vendor/comments/data/repositories/commet_repository_impl.dart';
 import 'package:app_vendor/comments/data/sources/comment_remote_data_source.dart';
 import 'package:app_vendor/comments/data/sources/comment_remote_data_source_impl.dart';

@@ -1,15 +1,15 @@
 import 'package:app_vendor/authentication/application/auth_notifier.dart';
 import 'package:app_vendor/authentication/application/auth_state.dart';
 import 'package:app_vendor/authentication/application/providers/auth_repository_provider.dart';
-import 'package:app_vendor/authentication/domain/usecase/clear_token_usecase.dart';
-import 'package:app_vendor/authentication/domain/usecase/get_shop_id_use_case.dart';
-import 'package:app_vendor/authentication/domain/usecase/get_token_usecase.dart';
-import 'package:app_vendor/authentication/domain/usecase/get_user_name_use_case.dart';
-import 'package:app_vendor/authentication/domain/usecase/login_user_usecase.dart';
-import 'package:app_vendor/authentication/domain/usecase/register_user_usecase.dart';
-import 'package:app_vendor/authentication/domain/usecase/save_shop_id_use_case.dart';
-import 'package:app_vendor/authentication/domain/usecase/save_token_usecase.dart';
-import 'package:app_vendor/authentication/domain/usecase/save_user_name_use_case.dart';
+import 'package:app_vendor/authentication/domain/usecases/clear_token_usecase.dart';
+import 'package:app_vendor/authentication/domain/usecases/get_shop_id_use_case.dart';
+import 'package:app_vendor/authentication/domain/usecases/get_token_usecase.dart';
+import 'package:app_vendor/authentication/domain/usecases/get_user_name_use_case.dart';
+import 'package:app_vendor/authentication/domain/usecases/login_user_usecase.dart';
+import 'package:app_vendor/authentication/domain/usecases/register_user_usecase.dart';
+import 'package:app_vendor/authentication/domain/usecases/save_shop_id_use_case.dart';
+import 'package:app_vendor/authentication/domain/usecases/save_token_usecase.dart';
+import 'package:app_vendor/authentication/domain/usecases/save_user_name_use_case.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final authNotifierProvider = StateNotifierProvider<AuthNotifier, AuthState>((

@@ -5,15 +5,35 @@ class AddressModel {
   final String street;
   final String floor;
   final String apartment;
-  bool defaultAddress;
+  final bool defaultAddress;
 
   AddressModel({
     required this.city,
     required this.street,
     required this.floor,
     required this.apartment,
-    this.defaultAddress = true,
+    required this.defaultAddress,
   });
+
+  factory AddressModel.fromJson(Map<String, dynamic> json) {
+    return AddressModel(
+      city: json['city'],
+      street: json['street'],
+      floor: json['floor'],
+      apartment: json['apartment'],
+      defaultAddress: json['defaultAddress'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'city': city,
+      'street': street,
+      'floor': floor,
+      'apartment': apartment,
+      'defaultAddress': defaultAddress,
+    };
+  }
 
   factory AddressModel.fromEntity(AddressEntity entity) {
     return AddressModel(
@@ -21,15 +41,17 @@ class AddressModel {
       street: entity.street,
       floor: entity.floor,
       apartment: entity.apartment,
-      //defaultAddress: entity.defaultAddress,
+      defaultAddress: entity.defaultAddress,
     );
   }
 
-  Map<String, dynamic> toJson() => {
-    'city': city,
-    'street': street,
-    'floor': floor,
-    'apartment': apartment,
-    'defaultAddress': defaultAddress,
-  };
+  AddressEntity toEntity() {
+    return AddressEntity(
+      city: city,
+      street: street,
+      floor: floor,
+      apartment: apartment,
+      defaultAddress: defaultAddress,
+    );
+  }
 }
